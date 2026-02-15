@@ -1,0 +1,21 @@
+:root {
+  /* Colors */
+  
+  /* Sizes */
+  --spacing-sm: 0.25rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 1.5rem;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+

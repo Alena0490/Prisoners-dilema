@@ -1,0 +1,16 @@
+.geopolitical-simulation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  min-height: 100vh;
+}
+
+.control-panel {
+    width: 40%;
+    min-height: 100vh;
+}
+
+.world-map-container {
+    width: 60%;
+}

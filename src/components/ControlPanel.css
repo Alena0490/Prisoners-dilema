@@ -1,0 +1,8 @@
+.control-panel {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
