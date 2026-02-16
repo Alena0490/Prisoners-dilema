@@ -10,8 +10,8 @@ const WorldMap = ({ className }: WorldMapProps) => {
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
   const getCountryFill = (code: string) => {
-    if (hoveredCountry === code) return '#4a9eff';
-    return '#555';
+    if (hoveredCountry === code) return '#F1B3F2';
+    return '#8EBFBF';
   };
 
   return (
@@ -26,7 +26,7 @@ const WorldMap = ({ className }: WorldMapProps) => {
               key={code}
               d={country.path}
               fill={getCountryFill(code)}
-              stroke="#000"
+              stroke="#1C3847"
               strokeWidth="0.5"
               className="country-path"
               onMouseEnter={() => setHoveredCountry(code)}

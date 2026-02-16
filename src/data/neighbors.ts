@@ -1,4 +1,3 @@
-// data/neighbors.ts
 export const NEIGHBORS: Record<string, string[]> = {
   // NORTH AMERICA
   'CA': ['US', 'GL'],

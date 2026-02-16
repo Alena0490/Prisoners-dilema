@@ -1,6 +1,37 @@
 :root {
   /* Colors */
+  --main-color: #F1B3F2;
+  --accent-color: #8EBFBF;
+  --background-color: #254559;
+  --background-color-light: #68868C;
+  --backgroun-color-dark: #1C3847;
+
+    /* Text */
+  --text-primary: #F5FEFF;
+  --text-secondary: #DCF0F2;
+  --text-invert: #1C3847;
+  --text-disabled: #7A9AA5; 
+
+   /* Interactive states */
+  --hover-color: #F9C9FA; 
+  --active-color: #E89FE9;
+  --disabled-color: #3D5A6D;
   
+  /* Borders */
+  --border-light: #9CB3BA; 
+  --border-dark: #1A3D4F;
+  
+  /* Semantic */
+  --success-color: #6FD4A8; 
+  --error-color: #F2A6C4;
+  --warning-color: #F4D35E;
+  --info-color: #6fc5d4;
+  
+  /* Simulation specific */
+  --cooperate-color: #6FD4A8;       /* cooperate */
+  --defect-color: #F2A6C4;          /* betray */  
+
+
   /* Sizes */
   --spacing-sm: 0.25rem;
   --spacing-md: 0.5rem;
@@ -17,5 +48,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
 }
 

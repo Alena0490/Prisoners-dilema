@@ -1,8 +1,38 @@
 .control-panel {
-    width: 100%;
-    max-width: 1200px;
+    width: 30%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-color);
     height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     margin: var(--spacing-md) auto;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
+    background-color: var(--background-color-light)
+}
+
+.control-panel h2 {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.control-panel button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--accent-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .control-panel {
+        width: 90%;
+        margin: var(--spacing-sm) auto;
+    }
 }

@@ -10,10 +10,12 @@ export interface Country {
   strategy?: 'C' | 'D';
   score?: number;
   totalScore?: number;
+  gdp?: number; 
 }
 
 // Automatically generate the COUNTRIES object based on MAP_PATHS, COUNTRY_NAMES, and NEIGHBORS data    
 export const COUNTRIES: Record<string, Country> = Object.fromEntries(
+    
   Object.entries(MAP_PATHS).map(([code, path]) => [
     code,
     {

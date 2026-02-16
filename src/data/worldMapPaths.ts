@@ -1,4 +1,3 @@
-
 export const MAP_PATHS: Record<string, string> = {
     /** ===  NORTH AMERICA === */
     //CANADA
