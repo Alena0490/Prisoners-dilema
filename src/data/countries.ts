@@ -19,10 +19,11 @@ export const COUNTRIES: Record<string, Country> = Object.fromEntries(
   Object.entries(MAP_PATHS).map(([code, path]) => [
     code,
     {
-      code,
-      name: COUNTRY_NAMES[code] || code,
-      path,
-      neighbors: NEIGHBORS[code] || [],
+        code,
+        name: COUNTRY_NAMES[code]?.name || code,
+        path,
+        neighbors: NEIGHBORS[code] || [],
+        gdp: COUNTRY_NAMES[code]?.gdp
     }
   ])
 );
