@@ -1,14 +1,46 @@
 .geopolitical-simulation {
-    max-width: 1200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-lg);
-    min-height: 100vh;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--spacing-xl);
+
+  padding: var(--spacing-xl);
+}
+
+.control-panel,
+.world-map-svg{
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.06), rgba(255,255,255,0) 40%),
+    var(--background-color-light);
+
+  box-shadow:
+    inset 0 1px 0 var(--frame-highlight),
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    var(--frame-shadow);
 }
 
 .world-map-container {
-    width: 60%;
+  flex: 1 1 720px;
+  min-width: min(720px, 100%);
 }
+
+.control-panel {
+  flex: 0 0 360px; 
+}
+
+@media (max-width: 1200px) {
+  .geopolitical-simulation {
+    min-height: unset;
+    align-items: flex-start;
+  }
+
+  .world-map-container,
+  .control-panel {
+    flex: 1 1 100%;
+  }
+}
+

@@ -1,26 +1,92 @@
 :root {
   /* Colors */
-  --main-color: #F1B3F2;
-  --accent-color: #8EBFBF;
+  --main-color: #ffc1ff;
+  --accent-color: #76A9AD;
   --background-color: #254559;
   --background-color-light: #68868C;
-  --backgroun-color-dark: #1C3847;
+  --background-color-dark: #1C3847;
 
     /* Text */
   --text-primary: #F5FEFF;
-  --text-secondary: #DCF0F2;
+  --text-secondary: #eafdff;
   --text-invert: #1C3847;
   --text-disabled: #7A9AA5; 
 
    /* Interactive states */
-  --hover-color: #F9C9FA; 
-  --active-color: #E89FE9;
-  --disabled-color: #3D5A6D;
+  --hover-color: color-mix(in srgb, var(--accent-color) 85%, white 15%);
+  --active-color: color-mix(in srgb, var(--accent-color) 85%, black 15%);
+  --disabled-color: color-mix(in srgb, var(--background-color-light) 80%, black 20%);
   
   /* Borders */
   --border-light: #9CB3BA; 
   --border-dark: #1A3D4F;
-  
+
+  /* UI surfaces */
+  --surface-1: var(--background-color-light);
+  --surface-2: color-mix(in srgb, var(--background-color-light) 70%, var(--background-color) 30%);
+  --surface-border: color-mix(in srgb, var(--border-light) 55%, transparent);
+
+  /* Shadows */
+  --shadow-1: 0 10px 30px rgba(0,0,0,.25);
+  --shadow-2: 0 2px 10px rgba(0,0,0,.18);
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--main-color) 55%, transparent);
+
+  /* Buttons */
+  --btn-surface: color-mix(in srgb, var(--background-color-light) 70%, white 30%);
+  --btn-surface-hover: color-mix(in srgb, var(--btn-surface) 85%, white 15%);
+  --btn-surface-pressed: color-mix(in srgb, var(--btn-surface) 80%, black 20%);
+
+  --btn-border: color-mix(in srgb, var(--border-light) 50%, transparent);
+  --btn-inner-light: rgba(255,255,255,.45);
+  --btn-inner-shadow: rgba(0,0,0,.18);
+
+  --btn-shadow-soft: 0 8px 20px rgba(0,0,0,.18);
+  --btn-shadow-pressed: 0 4px 10px rgba(0,0,0,.20);
+
+  --btn-text: var(--text-invert);
+
+  --btn-disabled-surface: color-mix(in srgb, var(--background-color-light) 80%, black 20%);
+  --btn-disabled-border: color-mix(in srgb, var(--border-light) 40%, transparent);
+  --btn-disabled-text: var(--text-disabled);
+
+  --btn-disabled-shadow: 0 3px 8px rgba(0,0,0,.18);
+
+  /* Map */
+  --map-bg: var(--background-color-dark);
+  --map-fill: var(--accent-color);
+  --map-fill-hover: var(--hover-color);
+  --map-stroke: color-mix(in srgb, var(--border-dark) 85%, var(--background-color));
+  --map-stroke-hover: color-mix(in srgb, var(--main-color) 60%, var(--text-primary));
+
+   /* Panel surfaces */
+  --panel-bg: color-mix(in srgb, var(--background-color-light) 88%, var(--background-color) 12%);
+  --panel-border: color-mix(in srgb, var(--border-light) 55%, transparent);
+  --panel-shadow: 0 18px 40px rgba(0,0,0,.28);
+
+  /* Section blocks */
+  --section-bg: color-mix(in srgb, var(--background-color) 12%, transparent);
+  --section-border: color-mix(in srgb, var(--border-dark) 25%, transparent);
+
+  /* “Industrial” border + shadow */
+  --frame-border: color-mix(in srgb, var(--border-dark) 55%, var(--border-light));
+  --frame-highlight: rgba(255,255,255,.10);
+  --frame-shadow: 0 10px 22px rgba(0,0,0,.35);
+
+  --btn-shadow: 0 4px 0 rgba(0,0,0,.35), 0 10px 16px rgba(0,0,0,.25);
+  --btn-shadow-pressed: 0 2px 0 rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.22);
+  --btn-gloss: linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--main-color) 55%, transparent);
+
+  /* Monitor/display */
+  --display-bg: color-mix(in srgb, var(--background-color-dark) 92%, black 8%);
+  --display-border: color-mix(in srgb, var(--border-light) 40%, transparent);
+  --display-text: var(--text-secondary);
+
   /* Semantic */
   --success-color: #6FD4A8; 
   --error-color: #F2A6C4;
@@ -39,9 +105,9 @@
   --spacing-xl: 1.5rem;
 
   /* Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 1rem;
+  --radius-sm: 0.2rem;
+  --radius-md: 0.35rem;
+  --radius-lg: 0.5rem;
 }
 
 * {

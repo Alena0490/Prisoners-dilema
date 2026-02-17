@@ -3,14 +3,19 @@ import { COUNTRY_NAMES } from './countryNames';
 import { NEIGHBORS } from './neighbors';
 
 export interface Country {
-  code: string;
-  name: string;
-  path: string;
-  neighbors: string[];
-  strategy?: 'C' | 'D';
-  score?: number;
-  totalScore?: number;
-  gdp?: number; 
+    code: string;
+    name: string;
+    path: string;
+    neighbors: string[];
+    strategy?: 'C' | 'D';
+    score?: number;
+    totalScore?: number;
+    gdp?: number; 
+    hegemon?: boolean;
+    playTable?: Record<string, 'cooperate' | 'defect'>
+    ranking?: number
+    nextStrongest?: string
+    nextWeakest?: string
 }
 
 // Automatically generate the COUNTRIES object based on MAP_PATHS, COUNTRY_NAMES, and NEIGHBORS data    

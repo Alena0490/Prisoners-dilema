@@ -7,12 +7,10 @@ interface WorldMapProps {
 }
 
 const WorldMap = ({ className }: WorldMapProps) => {
-  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-
-  const getCountryFill = (code: string) => {
-    if (hoveredCountry === code) return '#F1B3F2';
-    return '#8EBFBF';
-  };
+const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+const getCountryFill = () => {
+  return 'var(--accent-color)';
+};
 
   return (
     <div className={className}>
@@ -25,7 +23,7 @@ const WorldMap = ({ className }: WorldMapProps) => {
             <path
               key={code}
               d={country.path}
-              fill={getCountryFill(code)}
+              fill={getCountryFill()}
               stroke="#1C3847"
               strokeWidth="0.5"
               className="country-path"
