@@ -1,6 +1,5 @@
 .control-panel {
     width: 30%;
-    height: min(78vh, 820px);
     min-height: 520px;
     max-height: 80vh;
     overflow: hidden;

@@ -36,6 +36,7 @@
   .geopolitical-simulation {
     min-height: unset;
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .world-map-container,

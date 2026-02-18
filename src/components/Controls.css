@@ -1,3 +1,8 @@
+.controls {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .controls-setup,
 .controls-config {
   display: grid;
