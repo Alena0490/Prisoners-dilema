@@ -51,6 +51,23 @@
   z-index: 2;
 }
 
+.country-path.hegemon {
+  fill: var(--main-color);
+}
+
+.country-path.non-hegemon {
+  fill: color-mix(in srgb, var(--accent-color) 80%, white 20%);
+}
+
+.country-label{
+  font-weight: 700;
+  font-size: 11px;
+  pointer-events: none;
+  fill: var(--text-invert);
+  filter: drop-shadow(1px 1px 7px var(--text-secondary));
+  opacity: 1;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .world-map-container {

@@ -5,7 +5,10 @@ interface ControlsProps {
   onGo: () => void;
   onGoOnce: () => void;
   hegemonCount: number;
+  isModelPrepared: boolean
   isRunning: boolean;
+  showLabels: boolean;
+  onToggleLabels: () => void;
 }
 
 const Controls = ({ 
@@ -14,7 +17,10 @@ const Controls = ({
     onGo, 
     onGoOnce, 
     hegemonCount,
-    isRunning 
+    isModelPrepared,
+    isRunning,
+    onToggleLabels,
+    showLabels
 }: ControlsProps) => {
   return (
     <div className="controls">
@@ -30,7 +36,9 @@ const Controls = ({
       </div>
 
       <div className="controls-config">
-        <button className="toggle-labels">Toggle Labels</button>
+        <button className="toggle-labels" onClick={onToggleLabels}>
+          {showLabels ? 'Hide Labels' : 'Show Labels'}
+        </button>
         <button 
             className="prep-model"
             onClick={onPrepModel}
@@ -41,12 +49,14 @@ const Controls = ({
         <button 
          className={`go ${isRunning ? "is-running" : ""}`} 
          onClick={onGo}
+         disabled={!isModelPrepared}
         >
             {isRunning ? "Stop" : "Go"}
         </button>
         <button 
          className="go-once"
          onClick={onGoOnce}
+         disabled={!isModelPrepared || isRunning}
         >
             Go Once
         </button>

@@ -9,6 +9,8 @@ const GeopoliticalSimulation = () => {
 const [countries, setCountries] = useState(COUNTRIES);
 const [isRunning, setIsRunning] = useState(false);
 const [tick, setTick] = useState(0);
+const [isModelPrepared, setIsModelPrepared] = useState(false);
+const [showLabels, setShowLabels] = useState(false);
 
 const handleSetup = () => {
   // TODO: Load GIS data (u nás už máme)
@@ -24,11 +26,12 @@ const handlePrepModel = () => {
       
       // 2. Find the highest score among neighbours
       const maxNeighborScore = Math.max(
-        ...country.neighbors.map(nCode => countries[nCode]?.gdp || 0)
+        ...country.neighbors.map(nCode => Math.round((countries[nCode]?.gdp || 0) / 1000000000))
       );
       
       // 3. If my sccore > max neighbor score → hegemon = true
       const hegemon = score > maxNeighborScore; 
+      setIsModelPrepared(true);
       
       return [
         code, { 
@@ -40,11 +43,15 @@ const handlePrepModel = () => {
           )  
         }
       ];
-}) 
-) as Record<string, Country>;
-    setCountries(updatedCountries);
-    setTick(0);
+    }) 
+  ) as Record<string, Country>;
+      setCountries(updatedCountries);
+      setTick(0);
   };
+
+const handleToggleLabels = () => {
+  setShowLabels(!showLabels);
+};
 
   const runOneStep = useCallback(() => {
     // PHASE 1: Compute payoffs (USE old playTables)
@@ -176,14 +183,21 @@ const handlePrepModel = () => {
 
   return (
     <div className="geopolitical-simulation">
-      <WorldMap className="world-map-container" />
+      <WorldMap 
+        className="world-map-container" 
+        countries={countries} 
+        showLabels={showLabels} 
+      />
       <ControlPanel className="control-panel" 
         onSetup={handleSetup}
         onPrepModel={handlePrepModel}
         onGo={handleGo}
         onGoOnce={handleGoOnce}
         hegemonCount={countHegemons()}
+        isModelPrepared={isModelPrepared}
         isRunning={isRunning}
+        onToggleLabels={handleToggleLabels}
+        showLabels={showLabels}
   />
     </div>
   )

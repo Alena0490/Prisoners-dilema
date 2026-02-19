@@ -98,12 +98,12 @@ export const NEIGHBORS: Record<string, string[]> = {
   'DK': ['DE'],
   'EE': ['RU', 'LV'],
   'FI': ['NO', 'SE', 'RU'],
-  'FR': ['ES', 'IT', 'CH', 'DE', 'LU', 'BE'],
+  'FR': ['ES', 'IT', 'CH', 'DE', 'LU', 'BE', 'GB'],
   'DE': ['DK', 'PL', 'CZ', 'AT', 'CH', 'FR', 'LU', 'BE', 'NL'],
   'GR': ['AL', 'MK', 'BG', 'TR'],
   'HU': ['AT', 'SK', 'UA', 'RO', 'RS', 'HR', 'SI'],
   'IS': [],
-  'IE': [],
+  'IE': ['GB'],
   'IT': ['FR', 'CH', 'AT', 'SI'],
   'XK': ['RS', 'MK', 'AL', 'ME'],
   'LV': ['EE', 'RU', 'BY', 'LT'],
@@ -125,7 +125,7 @@ export const NEIGHBORS: Record<string, string[]> = {
   'CH': ['DE', 'FR', 'IT', 'AT'],
   'TR': ['GR', 'BG', 'GE', 'AM', 'AZ', 'IR', 'IQ', 'SY'],
   'UA': ['PL', 'SK', 'HU', 'RO', 'MD', 'RU', 'BY'],
-  'GB': [],
+  'GB': ['IE', 'FR'],
 
   // AFRICA
   'DZ': ['TN', 'LY', 'NE', 'ML', 'MR', 'EH', 'MA'],

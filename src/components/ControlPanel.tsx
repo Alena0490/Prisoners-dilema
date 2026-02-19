@@ -9,7 +9,10 @@ interface ControlPanelProps {
   onGo: () => void;
   onGoOnce: () => void;
   hegemonCount: number;
-  isRunning: boolean
+  isModelPrepared: boolean;
+  isRunning: boolean;
+  showLabels: boolean;
+  onToggleLabels: () => void;
 }
 
 const ControlPanel = ({ 
@@ -19,7 +22,11 @@ const ControlPanel = ({
   onGo, 
   onGoOnce, 
   hegemonCount,
-  isRunning
+  isModelPrepared,
+  isRunning,
+  onToggleLabels,
+  showLabels
+
 }: ControlPanelProps) => {
   return (
     <div className={className}>
@@ -30,7 +37,10 @@ const ControlPanel = ({
         onGo={onGo}
         onGoOnce={onGoOnce}
         hegemonCount={hegemonCount}
+        isModelPrepared={isModelPrepared}
         isRunning={isRunning}
+        onToggleLabels={onToggleLabels}
+        showLabels={showLabels}
   />
       <Graphs />
     </div>
