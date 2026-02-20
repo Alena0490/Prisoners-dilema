@@ -13,6 +13,9 @@ interface ControlPanelProps {
   isRunning: boolean;
   showLabels: boolean;
   onToggleLabels: () => void;
+  hegemonHistory: number[];
+  payoffsHistory: {hegemonAvg: number, otherAvg: number}[]
+  currentScores: number[];
 }
 
 const ControlPanel = ({ 
@@ -25,8 +28,10 @@ const ControlPanel = ({
   isModelPrepared,
   isRunning,
   onToggleLabels,
-  showLabels
-
+  showLabels,
+  hegemonHistory,
+  payoffsHistory,
+  currentScores
 }: ControlPanelProps) => {
   return (
     <div className={className}>
@@ -42,7 +47,11 @@ const ControlPanel = ({
         onToggleLabels={onToggleLabels}
         showLabels={showLabels}
   />
-      <Graphs />
+      <Graphs 
+       hegemonHistory={hegemonHistory} 
+       payoffsHistory={payoffsHistory}
+       currentScores={currentScores}
+      />
     </div>
   )
 }

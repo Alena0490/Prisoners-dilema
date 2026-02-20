@@ -1,6 +1,7 @@
 .controls {
     max-width: 500px;
     margin: 0 auto;
+    z-index: 0;
 }
 
 .controls-setup,

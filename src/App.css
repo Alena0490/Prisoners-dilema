@@ -1,4 +1,6 @@
 .geopolitical-simulation {
+  position: relative;
+  isolation: isolate;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
@@ -24,12 +26,16 @@
 }
 
 .world-map-container {
+  position: relative;
   flex: 1 1 720px;
   min-width: min(720px, 100%);
+  z-index: 50;
 }
 
 .control-panel {
+  position: relative;
   flex: 0 0 360px; 
+  z-index: 0;
 }
 
 @media (max-width: 1200px) {

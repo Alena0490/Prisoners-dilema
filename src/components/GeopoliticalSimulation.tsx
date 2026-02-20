@@ -11,6 +11,12 @@ const [isRunning, setIsRunning] = useState(false);
 const [tick, setTick] = useState(0);
 const [isModelPrepared, setIsModelPrepared] = useState(false);
 const [showLabels, setShowLabels] = useState(false);
+const [hegemonHistory, setHegemonHistory] = useState<number[]>([]);
+const [payoffsHistory, setPayoffsHistory] = useState<{hegemonAvg: number, otherAvg: number}[]>([]);
+
+const currentScores = Object.values(countries)
+  .map(c => c.score || 0)
+  .filter(s => s > 0);
 
 const handleSetup = () => {
   // TODO: Load GIS data (u nás už máme)
@@ -32,22 +38,24 @@ const handlePrepModel = () => {
       // 3. If my sccore > max neighbor score → hegemon = true
       const hegemon = score > maxNeighborScore; 
       setIsModelPrepared(true);
+      setHegemonHistory([]);
+      setPayoffsHistory([]);
       
-      return [
-        code, { 
-          ...country, 
-          score, 
-          hegemon, 
-          playTable: Object.fromEntries(
-            country.neighbors.map(nCode => [nCode, 'cooperate'])
-          )  
-        }
-      ];
-    }) 
-  ) as Record<string, Country>;
-      setCountries(updatedCountries);
-      setTick(0);
-  };
+        return [
+          code, { 
+            ...country, 
+            score, 
+            hegemon, 
+            playTable: Object.fromEntries(
+              country.neighbors.map(nCode => [nCode, 'cooperate'])
+            )  
+          }
+        ];
+      }) 
+    ) as Record<string, Country>;
+        setCountries(updatedCountries);
+        setTick(0);
+    };
 
 const handleToggleLabels = () => {
   setShowLabels(!showLabels);
@@ -156,7 +164,22 @@ const handleToggleLabels = () => {
     setCountries(updatedCountries);
     setTick(tick + 1);
     // Apply scores
-   // TODO: přidej scores z scoresUpdate do updatedCountries
+    const currentHegemonCount = Object.values(updatedCountries).filter(c => c.hegemon).length;
+    
+    const hegemons = Object.values(updatedCountries).filter(c => c.hegemon);
+    const others = Object.values(updatedCountries).filter(c => !c.hegemon);
+
+    const hegemonAvg = hegemons.length > 0 
+      ? hegemons.reduce((sum, c) => sum + (c.score || 0), 0) / hegemons.length 
+      : 0;
+
+    const otherAvg = others.length > 0
+      ? others.reduce((sum, c) => sum + (c.score || 0), 0) / others.length
+      : 0;
+
+    setPayoffsHistory(prev => [...prev, { hegemonAvg, otherAvg }]);
+
+    setHegemonHistory(prev => [...prev, currentHegemonCount]);
 }, [countries, tick ]);
 
   const handleGo = () => {
@@ -194,6 +217,9 @@ const handleToggleLabels = () => {
         onGo={handleGo}
         onGoOnce={handleGoOnce}
         hegemonCount={countHegemons()}
+        hegemonHistory={hegemonHistory}
+        payoffsHistory={payoffsHistory}
+        currentScores={currentScores}
         isModelPrepared={isModelPrepared}
         isRunning={isRunning}
         onToggleLabels={handleToggleLabels}

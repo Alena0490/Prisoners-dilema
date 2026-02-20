@@ -3,9 +3,12 @@
     align-items: stretch;
     margin: 0 auto;
     font-family: system-ui, -apple-system, sans-serif;
+    z-index: 500;
 }
 
 .world-map-svg {
+    position: relative;
+    z-index: 1000;
     width: 100%;
     min-width: 700px;
     height: auto;
