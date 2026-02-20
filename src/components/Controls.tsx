@@ -1,7 +1,9 @@
 import "./Controls.css"
 interface ControlsProps {
   onSetup: () => void;
+  strategy: 'tit-for-tat' | 'always-cooperate' | 'always-defect';
   onPrepModel: () => void;
+  onExportNetwork: () => void;
   onGo: () => void;
   onGoOnce: () => void;
   hegemonCount: number;
@@ -13,7 +15,9 @@ interface ControlsProps {
 
 const Controls = ({ 
     onSetup, 
+    strategy,
     onPrepModel, 
+    onExportNetwork,
     onGo, 
     onGoOnce, 
     hegemonCount,
@@ -25,14 +29,14 @@ const Controls = ({
   return (
     <div className="controls">
       <div className="controls-setup">
-        <button 
-         className="setup"
-         onClick={onSetup}
-        >
-            Setup
+        <button onClick={onSetup}>
+          Strategy: {strategy === 'tit-for-tat' ? 'T4T' : strategy === 'always-cooperate' ? 'AllC' : 'AllD'}
         </button>
 
-        <button className="export-network">Export Network</button>
+        <button 
+          className="export-network"
+          onClick={onExportNetwork}
+        >Export Network</button>
       </div>
 
       <div className="controls-config">

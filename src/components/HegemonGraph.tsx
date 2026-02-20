@@ -13,11 +13,11 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
     const maxValue = Math.max(...data);
     const minValue = Math.min(...data);
     if (data.length < 2) {
-    return <div className="graph-placeholder">Need at least 2 points</div>;
+    return <div className='graph-placeholder'>Need at least 2 points</div>;
     }
 
     if (maxValue === minValue || !isFinite(maxValue) || !isFinite(minValue)) {
-    return <div className="graph-placeholder">Invalid data</div>;
+    return <div className='graph-placeholder'>Invalid data</div>;
     }
 
   const width = 400;
@@ -50,8 +50,8 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
 
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${width} ${height}`} className="hegemon-graph">
-        <path d={pathData} className="graph-line" />
+      <svg viewBox={`0 0 ${width} ${height}`} className='hegemon-graph'>
+        <path d={pathData} className='graph-line' />
         
         {/* X axis */}
         <line
@@ -59,7 +59,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           y1={height - padBottom}
           x2={width - padRight}
           y2={height - padBottom}
-          className="graph-axis"
+          className='graph-axis'
         />
         
         {/* X axis labels */}
@@ -71,7 +71,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           return (
             <g key={`x-${index}`}>
               <line
-                className="axis-x"
+                className='axis-x'
                 x1={x}
                 x2={x}
                 y1={height - padBottom}
@@ -80,7 +80,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
               <text
                 x={x}
                 y={height - padBottom + 10}
-                textAnchor="middle"
+                textAnchor='middle'
                 className="axis-label"
               >
                 {index}
@@ -93,8 +93,8 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
         <text
           x={width / 2}
           y={height}
-          textAnchor="middle"
-          className="axis-legend"
+          textAnchor='middle'
+          className='axis-legend'
         >
           Ticks
         </text>
@@ -105,7 +105,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           y1={padTop}
           x2={padLeft}
           y2={height - padBottom}
-          className="graph-axis"
+          className='graph-axis'
         />
         
         {/* Y axis labels */}
@@ -114,7 +114,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           return (
             <g key={`y-${value}`}>
               <line
-                className="axis-y"
+                className='axis-y'
                 x1={padLeft}
                 x2={padLeft}
                 y1={y}
@@ -123,9 +123,9 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
               <text
                 x={padLeft - 8}
                 y={y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="axis-label"
+                textAnchor='end'
+                dominantBaseline='middle'
+                className='axis-label'
               >
                 {value}
               </text>
@@ -138,9 +138,9 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           x={padLeft - 30}
           y={height / 2}
           transform={`rotate(-90, ${padLeft - 30}, ${height / 2})`}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          className="axis-legend axis-legend--y"
+          textAnchor='middle'
+          dominantBaseline='middle'
+          className='axis-legend axis-legend--y'
         >
           Hegemons
         </text>

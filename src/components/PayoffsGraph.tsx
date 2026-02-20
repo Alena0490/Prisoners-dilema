@@ -6,6 +6,7 @@ interface PayoffsGraphProps {
 }
 
 const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
+
     const formatScore = (n: number) =>
     new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(n);
 
@@ -28,6 +29,10 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
 
     if (maxValue === minValue) {
         return null;
+    }
+
+    if (data.length < 2) {
+        return <div className="graph-placeholder">Need at least 2 points</div>;
     }
 
     const width = 400;
@@ -79,7 +84,7 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
             {/* Other line */}
             <path 
                 d={otherPath} 
-                className='geopolitical-simulationgraph-line graph-line--other'
+                className='graph-line graph-line--other'
             />
             {/* X axis */}
             <line

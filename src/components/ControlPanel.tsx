@@ -5,7 +5,9 @@ import Graphs from "./Graphs";
 interface ControlPanelProps {
   className?: string;
   onSetup: () => void;
+  strategy: 'tit-for-tat' | 'always-cooperate' | 'always-defect';
   onPrepModel: () => void;
+  onExportNetwork: () => void;
   onGo: () => void;
   onGoOnce: () => void;
   hegemonCount: number;
@@ -21,7 +23,9 @@ interface ControlPanelProps {
 const ControlPanel = ({ 
   className, 
   onSetup, 
+  strategy,
   onPrepModel, 
+  onExportNetwork,
   onGo, 
   onGoOnce, 
   hegemonCount,
@@ -38,7 +42,9 @@ const ControlPanel = ({
       <h2>Setup</h2>
       <Controls 
         onSetup={onSetup}
+        strategy={strategy}
         onPrepModel={onPrepModel}
+        onExportNetwork={onExportNetwork}
         onGo={onGo}
         onGoOnce={onGoOnce}
         hegemonCount={hegemonCount}

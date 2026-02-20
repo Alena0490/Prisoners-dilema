@@ -13,14 +13,40 @@ const [isModelPrepared, setIsModelPrepared] = useState(false);
 const [showLabels, setShowLabels] = useState(false);
 const [hegemonHistory, setHegemonHistory] = useState<number[]>([]);
 const [payoffsHistory, setPayoffsHistory] = useState<{hegemonAvg: number, otherAvg: number}[]>([]);
+const [strategy, setStrategy] = useState<'tit-for-tat' | 'always-cooperate' | 'always-defect'>('tit-for-tat');
 
 const currentScores = Object.values(countries)
   .map(c => c.score || 0)
   .filter(s => s > 0);
 
 const handleSetup = () => {
-  // TODO: Load GIS data (u nás už máme)
-  console.log('Setup clicked');
+  const strategies = ['tit-for-tat', 'always-cooperate', 'always-defect'] as const;
+  const currentIndex = strategies.indexOf(strategy);
+  const nextStrategy = strategies[(currentIndex + 1) % 3];
+  setStrategy(nextStrategy);
+  
+  // Reset simulace
+  handlePrepModel();
+};
+
+const handleExportNetwork = () => {
+  // CSV header
+  let csv = 'Country,Code,Neighbors\n';
+  
+  // Data rows
+  Object.entries(countries).forEach(([code, country]) => {
+    const neighbors = country.neighbors.join(',');
+    csv += `"${country.name}",${code},"${neighbors}"\n`;
+  });
+  
+  // Create download
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'geopolitical-network.csv';
+  link.click();
+  URL.revokeObjectURL(url);
 };
 
 const handlePrepModel = () => {
@@ -85,8 +111,8 @@ const handleToggleLabels = () => {
           }
         });     
         return [code, newScore];
-      })
-    );
+  })
+  );
 
     const updatedCountries = Object.fromEntries(
       Object.entries(countries).map(([code, country]) => {
@@ -135,17 +161,27 @@ const handleToggleLabels = () => {
             ...country.playTable 
           };
 
-          // Update based on what neighbors played last round (TFT)
-          country.neighbors.forEach(nCode => {
-            const theirLastAction = countries[nCode]?.playTable?.[code];
-            if (theirLastAction) {
-              playTable[nCode] = theirLastAction;  // Tit-for-Tat!
-            } else {
-              playTable[nCode] = 'cooperate';  // Default
-            }
-          });
+          // Apply strategy
+          if (strategy === 'always-cooperate') {
+            country.neighbors.forEach(nCode => {
+              playTable[nCode] = 'cooperate';
+            });
+          } else if (strategy === 'always-defect') {
+            country.neighbors.forEach(nCode => {
+              playTable[nCode] = 'defect';
+            });
+          } else { // tit-for-tat
+            country.neighbors.forEach(nCode => {
+              const theirLastAction = countries[nCode]?.playTable?.[code];
+              if (theirLastAction) {
+                playTable[nCode] = theirLastAction;
+              } else {
+                playTable[nCode] = 'cooperate';
+              }
+            });
+          }
 
-          // Defect against rivals (overrides TFT)
+          // Defect against rivals (overrides all strategies)
           if (nextStrongest) playTable[nextStrongest] = 'defect';
           if (nextWeakest) playTable[nextWeakest] = 'defect';
           
@@ -180,7 +216,7 @@ const handleToggleLabels = () => {
     setPayoffsHistory(prev => [...prev, { hegemonAvg, otherAvg }]);
 
     setHegemonHistory(prev => [...prev, currentHegemonCount]);
-}, [countries, tick ]);
+}, [countries, tick, strategy]); 
 
   const handleGo = () => {
     setIsRunning(!isRunning); 
@@ -213,7 +249,9 @@ const handleToggleLabels = () => {
       />
       <ControlPanel className="control-panel" 
         onSetup={handleSetup}
+        strategy={strategy}
         onPrepModel={handlePrepModel}
+        onExportNetwork={handleExportNetwork}
         onGo={handleGo}
         onGoOnce={handleGoOnce}
         hegemonCount={countHegemons()}
