@@ -1,6 +1,10 @@
 import Papa from 'papaparse';
 import countries from 'i18n-iso-countries';
 
+// ============================================
+// TYPES
+// ============================================
+
 interface CSVRow {
   'Country Name': string;
   'Country Code': string;
@@ -73,26 +77,39 @@ interface CSVRow {
   2024: string;
 }
 
+// ============================================
+// GDP PARSER
+// ============================================
+
+/**
+ * Parse World Bank GDP CSV file and convert to ISO2 country codes
+ * @param file - World Bank GDP CSV file
+ * @returns Promise resolving to Record<ISO2_CODE, GDP_VALUE>
+ */
 export const parseGDPFromCSV = (file: File): Promise<Record<string, number>> => {
   return new Promise((resolve, reject) => {
     Papa.parse<CSVRow>(file, {
-        header: true,
-  skipEmptyLines: true,
-  preview: 0,
-  beforeFirstChunk: (chunk) => {
-    // Cut off the first 4 lines of metadata
-    const lines = chunk.split('\n');
-    return lines.slice(4).join('\n');
-  },
+      header: true,
+      skipEmptyLines: true,
+      preview: 0,
+      
+      // Remove first 4 lines of World Bank metadata
+      beforeFirstChunk: (chunk) => {
+        const lines = chunk.split('\n');
+        return lines.slice(4).join('\n');
+      },
+      
       complete: (results) => {
         const gdpData: Record<string, number> = {};
 
+        // Process each country row
         results.data.forEach((row) => {
-          const code3 = row['Country Code'];
-          const value = row['2023'];
+          const code3 = row['Country Code'];  // ISO3 code
+          const value = row['2023'];  // GDP value for 2023
           
+          // Validate data
           if (code3 && value && !isNaN(Number(value))) {
-            // Transfer ISO3 to ISO2
+            // Convert ISO3 to ISO2 (e.g., USA -> US)
             const code2 = countries.alpha3ToAlpha2(code3);
             
             if (code2) {
@@ -101,9 +118,9 @@ export const parseGDPFromCSV = (file: File): Promise<Record<string, number>> => 
           }
         }); 
 
-        console.log('🔍 DEBUG - GDP entries found:', Object.keys(gdpData).length);
         resolve(gdpData);
       },
+      
       error: reject
     });
   });

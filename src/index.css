@@ -117,9 +117,23 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+  scrollbar-color: var(--panel-border) var(--background-color);
+  scroll-behavior: smooth;
+  overscroll-behavior: none; 
+  scrollbar-gutter: stable;
+}
+
 body {
+  max-height: 100vh;
   font-family: system-ui, -apple-system, sans-serif;
   background-color: var(--background-color);
-  color: var(--text-primary);
+  color: var(--text-primary); 
+  transition: filter 0.15s ease; 
+}
+
+body.tooltip-active {
+  filter: brightness(0.98); 
 }
 

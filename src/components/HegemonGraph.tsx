@@ -1,25 +1,40 @@
 import "./Graphs.css"
 
+// ============================================
+// TYPES
+// ============================================
+
 interface HegemonGraphProps {
   data: number[];
-  className?: string; 
+  className?: string;
 }
 
+// ============================================
+// COMPONENT
+// ============================================
+
 const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
-    if (data.length === 0) {
-        return null;
-    }
-
-    const maxValue = Math.max(...data);
-    const minValue = Math.min(...data);
-    if (data.length < 2) {
+  // ============================================
+  // VALIDATION
+  // ============================================
+  
+  if (data.length === 0) return null;
+  
+  if (data.length < 2) {
     return <div className='graph-placeholder'>Need at least 2 points</div>;
-    }
+  }
 
-    if (maxValue === minValue || !isFinite(maxValue) || !isFinite(minValue)) {
+  const maxValue = Math.max(...data);
+  const minValue = Math.min(...data);
+
+  if (maxValue === minValue || !isFinite(maxValue) || !isFinite(minValue)) {
     return <div className='graph-placeholder'>Invalid data</div>;
-    }
+  }
 
+  // ============================================
+  // GRAPH DIMENSIONS
+  // ============================================
+  
   const width = 400;
   const height = 175;
   const padLeft = 44;
@@ -27,12 +42,21 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
   const padTop = 16;
   const padBottom = 29;
 
+  // ============================================
+  // SCALE FUNCTIONS
+  // ============================================
+  
   const scaleX = (index: number) =>
     padLeft + (index / (data.length - 1)) * (width - padLeft - padRight);
 
   const scaleY = (value: number) =>
     height - padBottom - ((value - minValue) / (maxValue - minValue)) * (height - padTop - padBottom);
 
+  // ============================================
+  // COMPUTED VALUES
+  // ============================================
+  
+  // Line path
   const pathData = data
     .map((value, index) => {
       const x = scaleX(index);
@@ -41,16 +65,23 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
     })
     .join(' ');
 
+  // Y-axis ticks
   const yTicks = Array.from(
     new Set([minValue, Math.round((minValue + maxValue) / 2), maxValue])
   ).sort((a, b) => a - b);
   
+  // X-axis ticks
   const xTickCount = Math.min(5, data.length);
   const xTickStep = Math.floor(data.length / xTickCount);
 
+  // ============================================
+  // RENDER
+  // ============================================
+  
   return (
     <div className={className}>
       <svg viewBox={`0 0 ${width} ${height}`} className='hegemon-graph'>
+        {/* Data line */}
         <path d={pathData} className='graph-line' />
         
         {/* X axis */}

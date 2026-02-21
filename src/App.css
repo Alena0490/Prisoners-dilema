@@ -1,20 +1,54 @@
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
+
+  .simulation-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 var(--spacing-xl);
+  }
+
+  .simulation-wrapper h1 {
+    text-transform: uppercase;
+    font-size: clamp(1.25rem, 1rem + 0.8vw, 1.6rem);
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+    }
+
+  .simulation-header p {
+    font-size: 0.95rem;
+    text-align: center;
+    opacity: 0.8;
+    max-width: 60ch;
+    margin: 0 auto;
+  }
+
 .geopolitical-simulation {
   position: relative;
   isolation: isolate;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
 
   display: flex;
   align-items: stretch;
   justify-content: center;
   gap: var(--spacing-xl);
 
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) 0;
 }
 
+/* ============================================
+   SHARED PANEL STYLING
+   ============================================ */
+
+.simulation-header,
 .control-panel,
-.world-map-svg{
+.world-map-svg {
   background:
     linear-gradient(to bottom, rgba(255,255,255,.06), rgba(255,255,255,0) 40%),
     var(--background-color-light);
@@ -23,20 +57,46 @@
     inset 0 1px 0 var(--frame-highlight),
     inset 0 -1px 0 rgba(0,0,0,.25),
     var(--frame-shadow);
+  border: 2px solid var(--frame-border);
+  border-radius: var(--radius-md);
 }
+
+/* ============================================
+   HEADING CONTAINER
+   ============================================ */
+
+  .simulation-header {
+    width: 100%;
+    max-width: 1200px;
+    margin: var(--spacing-lg) auto 0;
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+
+/* ============================================
+   MAP CONTAINER
+   ============================================ */
 
 .world-map-container {
   position: relative;
-  flex: 1 1 720px;
-  min-width: min(720px, 100%);
+  flex: 1 1 700px;
+  min-width: min(700px, 100%);
   z-index: 50;
 }
 
+/* ============================================
+   CONTROL PANEL
+   ============================================ */
+
 .control-panel {
   position: relative;
-  flex: 0 0 360px; 
+  flex: 0 0 360px;
   z-index: 0;
 }
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
 
 @media (max-width: 1200px) {
   .geopolitical-simulation {
@@ -51,3 +111,17 @@
   }
 }
 
+@media (max-width: 648px) {
+  .simulation-wrapper {
+    padding: var(--spacing-lg);
+  }
+
+  .simulation-header {
+    margin: 0 auto 0;
+  }
+
+  .geopolitical-simulation {
+    padding: var(--spacing-lg) 0;
+    gap: var(--spacing-lg);
+  }
+}

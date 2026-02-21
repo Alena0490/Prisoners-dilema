@@ -1,23 +1,28 @@
+/* ============================================
+   TOOLTIP CONTAINER
+   ============================================ */
+
 .tooltip {
-    position: fixed;
-    width: min(280px, 70vw);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--background-color-tr) 70%, white 30%),
-        color-mix(in srgb, var(--background-color-tr) 90%, black 10%)
-    );
-    border: 1px solid color-mix(in srgb, var(--border-light) 55%, transparent);
-    box-shadow: var(--panel-shadow);
-    backdrop-filter: blur(10px) saturate(1.2);
-    -webkit-backdrop-filter: blur(10px) saturate(1.2);
-    pointer-events: none;
-    font-size: 0.92rem;
-    line-height: 1.25;
-    z-index: 99999;
+  position: fixed;
+  width: min(280px, 70vw);
+  max-height: 50vh;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--background-color-tr) 70%, white 30%),
+    color-mix(in srgb, var(--background-color-tr) 90%, black 10%)
+  );
+  border: 1px solid color-mix(in srgb, var(--border-light) 55%, transparent);
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  pointer-events: none;
+  z-index: 99999;
 }
 
+/* Inner highlight */
 .tooltip::before {
   content: "";
   position: absolute;
@@ -31,6 +36,7 @@
   opacity: 0.9;
 }
 
+/* Outer glow */
 .tooltip::after {
   content: "";
   position: absolute;
@@ -38,13 +44,34 @@
   border-radius: inherit;
   pointer-events: none;
 
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--main-color) 18%, transparent),
-              0 10px 28px rgba(0, 0, 0, 0.25);
+  box-shadow: 
+    0 0 0 1px color-mix(in srgb, var(--main-color) 18%, transparent),
+    0 10px 28px rgba(0, 0, 0, 0.25);
   opacity: 0.75;
   z-index: 101;
 }
 
-.tooltip strong {
+/* Scrolable content */
+.tooltip-scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--spacing-md) var(--spacing-lg);
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+/* ============================================
+   TOOLTIP CONTENT
+   ============================================ */
+
+/* Country name */
+.tooltip-scroll strong {
   display: block;
   font-weight: 700;
   text-transform: uppercase;
@@ -53,14 +80,19 @@
   color: var(--text-primary);
 }
 
-.tooltip > div {
+/* Info rows */
+.tooltip-scroll > div {
   padding: 0.125rem 0;
   border-top: 1px dashed color-mix(in srgb, var(--border-light) 22%, transparent);
 }
 
-.tooltip > div:first-of-type {
+.tooltip-scroll > div:first-of-type {
   border-top: 0;
 }
+
+/* ============================================
+   HEGEMON STATUS
+   ============================================ */
 
 .hegemon,
 .not-hegemon {
@@ -75,7 +107,10 @@
   color: var(--error-color);
 }
 
-/* Sekce Strategies */
+/* ============================================
+   STRATEGIES SECTION
+   ============================================ */
+
 .strategies-header {
   margin-top: var(--spacing-md);
   font-weight: 700;
@@ -87,20 +122,22 @@
   align-items: baseline;
   gap: 0.25rem;
   padding: 0.2rem 0;
-  font-size: 0.88em;
+  font-size: 0.85em;
+  line-height: 1.1;
   color: color-mix(in srgb, var(--text-secondary) 92%, var(--text-primary));
 }
 
+/* Strategy badges */
 .strategy-item span {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-left: 0.25rem;
-    padding: 0.125rem 0.4rem;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--border-light) 22%, transparent);
-    background: color-mix(in srgb, var(--background-color) 20%, transparent);
-    white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-left: 0.25rem;
+  padding: 0.125rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border-light) 22%, transparent);
+  background: color-mix(in srgb, var(--background-color) 20%, transparent);
+  white-space: nowrap;
 }
 
 .cooperate {
@@ -110,6 +147,10 @@
 .defect {
   color: var(--defect-color);
 }
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
 
 @media (prefers-reduced-transparency: reduce) {
   .tooltip {

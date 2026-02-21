@@ -1,11 +1,12 @@
+/* ============================================
+   RESULTS CONTAINER
+   ============================================ */
 
-
-.results{
+.results {
   max-height: 40vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-color) transparent;
-
   scrollbar-gutter: stable;
 
   display: flex;
@@ -13,11 +14,11 @@
   align-items: center;
   gap: var(--spacing-lg);
   margin-block: var(--spacing-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md) 3rem;
 }
 
-.results  .result-title {
-  margin-bottom: 0;
+.results .result-title {
+  margin-bottom: calc(var(--spacing-lg) * -1);
 }
 
 .divider {
@@ -27,17 +28,25 @@
   opacity: 0.5;
 }
 
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
 h3 {
   color: var(--text-primary);
   margin: var(--spacing-sm) 0 calc(var(--spacing-sm) * -1);
 }
 
+/* ============================================
+   GRAPH CONTAINERS
+   ============================================ */
+
 .results output {
-    width: 100%;
-    border-radius: var(--radius-md);
-    background-color: var(--text-secondary);
-    color: var(--text-invert);
-    padding: var(--spacing-sm);
+  width: 100%;
+  border-radius: var(--radius-md);
+  background-color: var(--text-secondary);
+  color: var(--text-invert);
+  padding: var(--spacing-sm);
 }
 
 .results output:empty {
@@ -50,14 +59,16 @@ h3 {
   overflow: hidden;
 }
 
-/* reusable graph base */
 .results output svg {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* axis + ticks */
+/* ============================================
+   AXES & GRID
+   ============================================ */
+
 .graph-axis {
   stroke: var(--border-dark);
   stroke-width: 0.8;
@@ -70,15 +81,6 @@ h3 {
   opacity: 0.55;
 }
 
-/* data line */
-.graph-line {
-  fill: none;
-  stroke: var(--main-color);
-  stroke-width: 3px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 .axis-y,
 .axis-x {
   stroke: var(--border-dark);
@@ -86,7 +88,10 @@ h3 {
   opacity: 0.5;
 }
 
-/* typography */
+/* ============================================
+   AXIS LABELS & LEGENDS
+   ============================================ */
+
 .axis-label {
   font-size: 10px;
   fill: color-mix(in srgb, var(--text-invert) 88%, var(--border-dark));
@@ -106,15 +111,22 @@ h3 {
   font-weight: 600;
 }
 
-/*** === HEGEMON GRAPH === */
-.hegemon-graph {
-  /* height: 100%; */
-  max-height: 9rem;
-  display: block;
+/* ============================================
+   DATA VISUALIZATION - LINES
+   ============================================ */
+
+.graph-line {
   fill: none;
+  stroke: var(--main-color);
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/*** === SCORES GRAPH === */
+/* ============================================
+   DATA VISUALIZATION - BARS
+   ============================================ */
+
 .bar {
   fill: var(--accent-color);
   opacity: 0.8;
@@ -124,13 +136,23 @@ h3 {
   opacity: 1;
 }
 
-/*** === PAYOFF GRAPH === */
+/* ============================================
+   GRAPH-SPECIFIC STYLES
+   ============================================ */
+
+/* Hegemon Count Graph */
+.hegemon-graph {
+  max-height: 9rem;
+  display: block;
+  fill: none;
+}
+
+/* Payoffs Graph - Two lines */
 .graph-line--hegemon {
-  stroke: var(--success-color); 
+  stroke: var(--success-color);
 }
 
 .graph-line--other {
-  stroke: var(--error-color); 
+  stroke: var(--error-color);
   opacity: 0.8;
 }
-

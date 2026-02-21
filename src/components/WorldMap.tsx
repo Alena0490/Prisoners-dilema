@@ -1,7 +1,11 @@
-import { useState,useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Country } from '../data/countries';
 import Tooltip from './Tooltip';
 import "./WorldMap.css";
+
+// ============================================
+// TYPES
+// ============================================
 
 type LabelInfo = { 
   x: number; 
@@ -10,8 +14,10 @@ type LabelInfo = {
 };
 
 type Rect = { 
-  x1: number; y1: number; 
-  x2: number; y2: number 
+  x1: number;
+  y1: number; 
+  x2: number;
+  y2: number 
 };
 
 type LabelItem = {
@@ -29,68 +35,129 @@ interface WorldMapProps {
   showLabels: boolean;
 }
 
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
 const formatScore = (n: number) =>
   new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(n);
 
 const intersects = (a: Rect, b: Rect) =>
   !(a.x2 < b.x1 || a.x1 > b.x2 || a.y2 < b.y1 || a.y1 > b.y2);
 
+// ============================================
+// COMPONENT
+// ============================================
+
 const WorldMap = ({ 
   className, 
   countries,
   showLabels 
 }: WorldMapProps) => {
-const svgRef = useRef<SVGSVGElement>(null);
-const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-const [labelPositions, setLabelPositions] = useState<Record<string, LabelInfo>>({});
-const hasCalculated = useRef(false);
+  // ============================================
+  // STATE & REFS
+  // ============================================
+  
+  const svgRef = useRef<SVGSVGElement>(null);
+  const hasCalculated = useRef(false);
+  
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [labelPositions, setLabelPositions] = useState<Record<string, LabelInfo>>({});
 
-useEffect(() => {
-  if (!showLabels || !svgRef.current || hasCalculated.current) return;
+  // ============================================
+  // EFFECTS
+  // ============================================
+  
+  // Calculate label positions when labels are shown
+  useEffect(() => {
+    if (!showLabels || !svgRef.current || hasCalculated.current) return;
 
-  const positions: Record<string, { x: number; y: number; area: number }> = {};
+    const positions: Record<string, LabelInfo> = {};
 
-  Object.entries(countries).forEach(([code, country]) => {
-    const tempPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    tempPath.setAttribute('d', country.path);
-    svgRef.current!.appendChild(tempPath);
+    Object.entries(countries).forEach(([code, country]) => {
+      const tempPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      tempPath.setAttribute('d', country.path);
+      svgRef.current!.appendChild(tempPath);
 
-    const bbox = tempPath.getBBox();
-    positions[code] = {
-      x: bbox.x + bbox.width / 2,
-      y: bbox.y + bbox.height / 2,
-      area: bbox.width * bbox.height
+      const bbox = tempPath.getBBox();
+      positions[code] = {
+        x: bbox.x + bbox.width / 2,
+        y: bbox.y + bbox.height / 2,
+        area: bbox.width * bbox.height
+      };
+
+      svgRef.current!.removeChild(tempPath);
+    });
+
+    const rafId = requestAnimationFrame(() => {
+      setLabelPositions(positions);
+      hasCalculated.current = true;
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, [showLabels, countries]);
+
+  // ============================================
+  // HELPERS
+  // ============================================
+  
+  const getCountryClass = (country: Country) => {
+    if (country.hegemon === undefined) return 'country-path';
+    return country.hegemon ? 'country-path hegemon' : 'country-path non-hegemon';
+  };
+
+  // Tooltip scrolling
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMapWheel = (e: React.WheelEvent) => {
+    const el = tooltipRef.current;
+    if (!el) return;
+
+    const canScroll = el.scrollHeight > el.clientHeight;
+    if (!canScroll) return;
+
+    // Check if we're at scroll boundaries
+    const atTop = el.scrollTop === 0 && e.deltaY < 0;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight && e.deltaY > 0;
+
+    // Only prevent if we're NOT at boundaries
+    if (!atTop && !atBottom) {
+      e.preventDefault();
+      e.stopPropagation();
+      el.scrollTop += e.deltaY;
+    }
+  };
+
+  useEffect(() => {
+    if (hoveredCountry) {
+      // Tooltip je viditelný - zakázat body scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Tooltip skrytý - vrátit scroll
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
     };
-    positions[code] = {
-      x: bbox.x + bbox.width / 2,
-      y: bbox.y + bbox.height / 2,
-      area: bbox.width * bbox.height
-    };
+  }, [hoveredCountry]);
 
-    svgRef.current!.removeChild(tempPath);
-  });
-
-  const rafId = requestAnimationFrame(() => {
-    setLabelPositions(positions);
-    hasCalculated.current = true;
-  });
-
-  return () => cancelAnimationFrame(rafId);
-}, [showLabels, countries]);
-
-const getCountryClass = (country: Country) => {
-  if (country.hegemon === undefined) return 'country-path';
-  return country.hegemon ? 'country-path hegemon' : 'country-path non-hegemon';
-};
-
+  // ============================================
+  // RENDER
+  // ============================================
+  
   return (
-    <div className={className}>
+    <div 
+      className={className}
+      onWheel={handleMapWheel}
+    >
       <svg 
         ref={svgRef}
         viewBox="0 0 1009 652"
         className="world-map-svg"
       >
+        {/* Country paths */}
         <g>
           {Object.entries(countries).map(([code, country]) => (
             <path
@@ -108,6 +175,7 @@ const getCountryClass = (country: Country) => {
           ))}
         </g>
 
+        {/* Score labels with collision detection */}
         {showLabels && (
           <g className="labels">
             {(() => {
@@ -161,11 +229,14 @@ const getCountryClass = (country: Country) => {
           </g>
         )}
       </svg>
+      
+      {/* Tooltip on hover */}
       {hoveredCountry && (
         <Tooltip
-        hoveredCountry={hoveredCountry}
-        mousePosition={mousePosition}
-        countries={countries}
+           refEl={tooltipRef}
+          hoveredCountry={hoveredCountry}
+          mousePosition={mousePosition}
+          countries={countries}
         />
       )}
     </div>
