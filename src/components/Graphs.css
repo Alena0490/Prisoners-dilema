@@ -14,7 +14,7 @@
   align-items: center;
   gap: var(--spacing-lg);
   margin-block: var(--spacing-md);
-  padding: var(--spacing-md) var(--spacing-md) 3rem;
+  padding: var(--spacing-md) var(--spacing-md) 5rem;
 }
 
 .results .result-title {
@@ -61,6 +61,7 @@ h3 {
 
 .results output svg {
   width: 100%;
+  min-height: fit-content;
   height: auto;
   display: block;
 }
@@ -155,4 +156,14 @@ h3 {
 .graph-line--other {
   stroke: var(--error-color);
   opacity: 0.8;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+   @media (max-width: 768px) {
+  results {
+    margin-bottom: 7rem;
+  }
 }

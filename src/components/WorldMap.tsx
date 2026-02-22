@@ -64,6 +64,7 @@ const WorldMap = ({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [labelPositions, setLabelPositions] = useState<Record<string, LabelInfo>>({});
+  const [activeCountry, setActiveCountry] = useState<string | null>(null);
 
   // ============================================
   // EFFECTS
@@ -101,6 +102,9 @@ const WorldMap = ({
   // ============================================
   // HELPERS
   // ============================================
+
+  // Touch device detection
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   
   const getCountryClass = (country: Country) => {
     if (country.hegemon === undefined) return 'country-path';
@@ -143,6 +147,28 @@ const WorldMap = ({
     };
   }, [hoveredCountry]);
 
+  // Click outside handler
+useEffect(() => {
+  if (!isTouchDevice || !activeCountry) return;
+
+  const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+    const target = e.target as Element;
+    
+    // When tapping outside the Tooltip
+    if (!target.closest('.tooltip') && !target.closest('.country-path')) {
+      setActiveCountry(null);
+    }
+  };
+
+  document.addEventListener('click', handleClickOutside);
+  document.addEventListener('touchend', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('click', handleClickOutside);
+    document.removeEventListener('touchend', handleClickOutside);
+  };
+}, [activeCountry, isTouchDevice]);
+
   // ============================================
   // RENDER
   // ============================================
@@ -166,11 +192,22 @@ const WorldMap = ({
               stroke="#1C3847"
               strokeWidth="0.5"
               className={getCountryClass(country)} 
-              onMouseEnter={() => setHoveredCountry(code)}
-              onMouseLeave={() => setHoveredCountry(null)}
-              onMouseMove={(e) => {
-                setMousePosition({ x: e.clientX, y: e.clientY });
-              }}
+                onClick={() => {
+                  if (isTouchDevice) {
+                    setActiveCountry(activeCountry === code ? null : code);
+                  }
+                }}
+                onMouseEnter={() => {
+                  if (!isTouchDevice) setHoveredCountry(code);
+                }}
+                onMouseLeave={() => {
+                  if (!isTouchDevice) setHoveredCountry(null);
+                }}
+                onMouseMove={(e) => {
+                  if (!isTouchDevice) {
+                    setMousePosition({ x: e.clientX, y: e.clientY });
+                  }
+                }}
             />
           ))}
         </g>
@@ -233,10 +270,11 @@ const WorldMap = ({
       {/* Tooltip on hover */}
       {hoveredCountry && (
         <Tooltip
-           refEl={tooltipRef}
-          hoveredCountry={hoveredCountry}
+          refEl={tooltipRef}
+          hoveredCountry={hoveredCountry || activeCountry!}
           mousePosition={mousePosition}
           countries={countries}
+          isMobile={isTouchDevice}
         />
       )}
     </div>

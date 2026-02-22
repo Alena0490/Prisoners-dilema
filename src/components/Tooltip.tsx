@@ -9,6 +9,7 @@ import "./Tooltip.css"
 interface TooltipProps {
     hoveredCountry: string;
     mousePosition: { x: number, y: number };
+    isMobile?: boolean;
     countries: Record<string, Country>;
     refEl: React.RefObject<HTMLDivElement | null>;
 }
@@ -21,7 +22,8 @@ const Tooltip = ({
     hoveredCountry,
     mousePosition,
     countries,
-    refEl 
+    refEl,
+    isMobile
 }: TooltipProps) => {
   // ============================================
   // POSITIONING LOGIC
@@ -31,11 +33,20 @@ const Tooltip = ({
   const shouldFlipVertical = mousePosition.y > window.innerHeight / 2;
   const shouldFlipHorizontal = mousePosition.x > window.innerWidth / 2;
   
-  const style = {
-    left: shouldFlipHorizontal ? mousePosition.x - 210 : mousePosition.x + 10,
-    top: shouldFlipVertical ? 'auto' : mousePosition.y + 10,
-    bottom: shouldFlipVertical ? window.innerHeight - mousePosition.y + 10 : 'auto'
-  };
+  const style = isMobile 
+  ? {
+      // Mobile - centered
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+      maxWidth: '90vw'
+    }
+  : {
+      // Desktop - follow mouse
+      left: shouldFlipHorizontal ? mousePosition.x - 210 : mousePosition.x + 10,
+      top: shouldFlipVertical ? 'auto' : mousePosition.y + 10,
+      bottom: shouldFlipVertical ? window.innerHeight - mousePosition.y + 10 : 'auto'
+    };
 
   // ============================================
   // DATA

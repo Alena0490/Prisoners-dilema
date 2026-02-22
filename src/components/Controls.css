@@ -3,7 +3,7 @@
    ============================================ */
 
 .controls {
-  max-width: 500px;
+  max-width: 700px;
   margin: 0 auto;
   z-index: 0;
 }
@@ -45,6 +45,7 @@
 .controls button {
   appearance: none;
   position: relative;
+  min-height: 2rem;
   border-radius: var(--radius-sm);
   border: 1px solid color-mix(in srgb, var(--border-dark) 35%, transparent);
 
