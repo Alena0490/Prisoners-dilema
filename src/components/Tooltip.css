@@ -56,6 +56,8 @@
   max-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
+  pointer-events: auto;
+  touch-action: pan-y; 
   padding: var(--spacing-md) var(--spacing-lg);
   scroll-behavior: smooth;
   overscroll-behavior: contain;
@@ -157,5 +159,11 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: color-mix(in srgb, var(--background-color) 82%, black 18%);
+  }
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    pointer-events: auto;
   }
 }
