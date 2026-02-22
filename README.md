@@ -31,7 +31,7 @@ This project recreates a NetLogo model I worked with years ago during my studies
 
 ## 🛠️ Tech Stack
 
-- **React 18** + **TypeScript** + **Vite**
+- **React 19** + **TypeScript** + **Vite**
 - **SVG-based visualization** for map and graphs
 - **Papaparse** for CSV handling
 - **i18n-iso-countries** for country code conversion
