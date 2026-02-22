@@ -134,18 +134,16 @@ const WorldMap = ({
   };
 
   useEffect(() => {
-    if (hoveredCountry) {
-      // Tooltip je viditelný - zakázat body scroll
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Tooltip skrytý - vrátit scroll
-      document.body.style.overflow = '';
-    }
-    
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [hoveredCountry]);
+  if (hoveredCountry || activeCountry) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+  
+  return () => {
+    document.body.style.overflow = '';
+  };
+}, [hoveredCountry, activeCountry]);
 
   // Click outside handler
 useEffect(() => {
@@ -268,7 +266,7 @@ useEffect(() => {
       </svg>
       
       {/* Tooltip on hover */}
-      {hoveredCountry && (
+      {(hoveredCountry || activeCountry) && (  
         <Tooltip
           refEl={tooltipRef}
           hoveredCountry={hoveredCountry || activeCountry!}
