@@ -60,7 +60,7 @@ const Tooltip = ({
   // ============================================
   
   return (
-    <div className="tooltip" style={style}>
+    <div className={`tooltip ${isMobile ? 'tooltip--mobile' : ''}`}  style={style}>
         <div className="tooltip-scroll" ref={refEl}>
         {/* Country Name */}
         <strong>{country.name}</strong>

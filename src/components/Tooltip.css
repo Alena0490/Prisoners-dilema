@@ -51,6 +51,16 @@
   z-index: 101;
 }
 
+.tooltip--mobile {
+  pointer-events: auto;
+}
+
+.tooltip--mobile .tooltip-scroll {
+  pointer-events: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
 /* Scrolable content */
 .tooltip-scroll {
   max-height: 50vh;
