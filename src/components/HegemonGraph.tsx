@@ -1,4 +1,4 @@
-import "./Graphs.css"
+import './Graphs.css'
 
 // ============================================
 // TYPES
@@ -80,9 +80,15 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
   
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${width} ${height}`} className='hegemon-graph'>
+      <svg 
+        viewBox={`0 0 ${width} ${height}`} 
+        className='hegemon-graph'
+        role='img' 
+        aria-label={`Line graph showing hegemon count over ${data.length} simulation steps, ranging from ${minValue} to ${maxValue}`}
+      >
+        <title>Hegemon Count Over Time</title>  
         {/* Data line */}
-        <path d={pathData} className='graph-line' />
+        <path d={pathData} className='graph-line' aria-hidden='false' />
         
         {/* X axis */}
         <line
@@ -91,34 +97,37 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           x2={width - padRight}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
         
-        {/* X axis labels */}
-        {Array.from({ length: xTickCount }).map((_, i) => {
-          const index = i * xTickStep;
-          if (index >= data.length) return null;
-          
-          const x = scaleX(index);
-          return (
-            <g key={`x-${index}`}>
-              <line
-                className='axis-x'
-                x1={x}
-                x2={x}
-                y1={height - padBottom}
-                y2={height - padBottom + 5}
-              />
-              <text
-                x={x}
-                y={height - padBottom + 10}
-                textAnchor='middle'
-                className="axis-label"
-              >
-                {index}
-              </text>
+            {/* X axis labels */}
+            <g aria-hidden='true'>
+              {Array.from({ length: xTickCount }).map((_, i) => {
+                const index = i * xTickStep;
+                if (index >= data.length) return null;
+                
+                const x = scaleX(index);
+                return (
+                  <g key={`x-${index}`}>
+                    <line
+                      className='axis-x'
+                      x1={x}
+                      x2={x}
+                      y1={height - padBottom}
+                      y2={height - padBottom + 5}
+                    />
+                    <text
+                      x={x}
+                      y={height - padBottom + 10}
+                      textAnchor='middle'
+                      className='axis-label'
+                    >
+                      {index}
+                    </text>
+                  </g>
+                );
+              })}
             </g>
-          );
-        })}
         
         {/* X axis legend */}
         <text
@@ -126,6 +135,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           y={height}
           textAnchor='middle'
           className='axis-legend'
+          aria-hidden='true' 
         >
           Ticks
         </text>
@@ -137,32 +147,35 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           x2={padLeft}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
         
         {/* Y axis labels */}
-        {yTicks.map(value => {
-          const y = scaleY(value);
-          return (
-            <g key={`y-${value}`}>
-              <line
-                className='axis-y'
-                x1={padLeft}
-                x2={padLeft}
-                y1={y}
-                y2={y}
-              />
-              <text
-                x={padLeft - 8}
-                y={y}
-                textAnchor='end'
-                dominantBaseline='middle'
-                className='axis-label'
-              >
-                {value}
-              </text>
-            </g>
-          );
-        })}
+        <g aria-hidden='true'>
+          {yTicks.map(value => {
+            const y = scaleY(value);
+            return (
+              <g key={`y-${value}`}>
+                <line
+                  className='axis-y'
+                  x1={padLeft}
+                  x2={padLeft}
+                  y1={y}
+                  y2={y}
+                />
+                <text
+                  x={padLeft - 8}
+                  y={y}
+                  textAnchor='end'
+                  dominantBaseline='middle'
+                  className='axis-label'
+                >
+                  {value}
+                </text>
+              </g>
+            );
+          })}
+        </g>
         
         {/* Y axis legend */}
         <text
@@ -172,6 +185,7 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
           textAnchor='middle'
           dominantBaseline='middle'
           className='axis-legend axis-legend--y'
+          aria-hidden='true'
         >
           Hegemons
         </text>

@@ -1,4 +1,4 @@
-import "./Graphs.css"
+import './Graphs.css'
 
 // ============================================
 // TYPES
@@ -14,7 +14,7 @@ interface PayoffsGraphProps {
 // ============================================
 
 const formatScore = (n: number) =>
-  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 0 }).format(n);
 
 // ============================================
 // COMPONENT
@@ -39,7 +39,7 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
   if (maxValue === minValue) return null;
 
   if (data.length < 2) {
-    return <div className="graph-placeholder">Need at least 2 points</div>;
+    return <div className='graph-placeholder'>Need at least 2 points</div>;
   }
 
   // ============================================
@@ -100,7 +100,14 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
   
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${width} ${height}`} className='payoffs-graph'>
+      <svg 
+        viewBox={`0 0 ${width} ${height}`} 
+        className='payoffs-graph'
+        role='img'
+        aria-label={`Line graph comparing average scores: hegemons ranging from ${formatScore(Math.min(...data.map(d => d.hegemonAvg)))} to ${formatScore(Math.max(...data.map(d => d.hegemonAvg)))}, others from ${formatScore(Math.min(...data.map(d => d.otherAvg)))} to ${formatScore(Math.max(...data.map(d => d.otherAvg)))} over ${data.length} steps`}
+      >
+        <title>Average Payoffs Comparison: Hegemons vs Others</title>
+        <desc>Two lines showing average scores over time. Green line represents hegemons, red line represents other countries.</desc>
         {/* Hegemon line */}
         <path 
           d={hegemonPath} 
@@ -120,34 +127,37 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
           x2={width - padRight}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
         
         {/* X axis labels */}
-        {Array.from({ length: xTickCount }).map((_, i) => {
-          const index = i * xTickStep;
-          if (index >= data.length) return null;
-          
-          const x = scaleX(index);
-          return (
-            <g key={`x-${index}`}>
-              <line
-                className='axis-x'
-                x1={x}
-                x2={x}
-                y1={height - padBottom}
-                y2={height - padBottom + 5}
-              />
-              <text
-                x={x}
-                y={height - padBottom + 10}
-                textAnchor='middle'
-                className='axis-label'
-              >
-                {index}
-              </text>
-            </g>
-          );
-        })}
+        <g aria-hidden='true'>
+          {Array.from({ length: xTickCount }).map((_, i) => {
+            const index = i * xTickStep;
+            if (index >= data.length) return null;
+            
+            const x = scaleX(index);
+            return (
+              <g key={`x-${index}`}>
+                <line
+                  className='axis-x'
+                  x1={x}
+                  x2={x}
+                  y1={height - padBottom}
+                  y2={height - padBottom + 5}
+                />
+                <text
+                  x={x}
+                  y={height - padBottom + 10}
+                  textAnchor='middle'
+                  className='axis-label'
+                >
+                  {index}
+                </text>
+              </g>
+            );
+          })}
+        </g>
         
         {/* X axis legend */}
         <text
@@ -155,6 +165,7 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
           y={height}
           textAnchor='middle'
           className='axis-legend'
+          aria-hidden='true'
         >
           Ticks
         </text>
@@ -166,32 +177,35 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
           x2={padLeft}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
         
         {/* Y axis labels */}
-        {yTicks.map(value => {
-          const y = scaleY(value);
-          return (
-            <g key={`y-${value}`}>
-              <line
-                className='axis-y'
-                x1={padLeft}
-                x2={padLeft}
-                y1={y}
-                y2={y}
-              />
-              <text
-                x={padLeft - 8}
-                y={y}
-                textAnchor='end'
-                dominantBaseline='middle'
-                className='axis-label'
-              >
-                {formatScore(value)}
-              </text>
-            </g>
-          );
-        })}
+        <g aria-hidden='true'>
+          {yTicks.map(value => {
+            const y = scaleY(value);
+            return (
+              <g key={`y-${value}`}>
+                <line
+                  className='axis-y'
+                  x1={padLeft}
+                  x2={padLeft}
+                  y1={y}
+                  y2={y}
+                />
+                <text
+                  x={padLeft - 8}
+                  y={y}
+                  textAnchor='end'
+                  dominantBaseline='middle'
+                  className='axis-label'
+                >
+                  {formatScore(value)}
+                </text>
+              </g>
+            );
+          })}
+        </g>
         
         {/* Y axis legend */}
         <text
@@ -201,21 +215,24 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
           textAnchor='middle'
           dominantBaseline='middle'
           className='axis-legend axis-legend--y'
+          aria-hidden='true'
         >
           Average Score
         </text>
         
         {/* Legend */}
-        <div className="graph-legend">
-          <div className="legend-item">
-            <span className="legend-line legend-line--hegemon"></span>
-            <span>Hegemons</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-line legend-line--other"></span>
-            <span>Others</span>
-          </div>
-        </div>
+        <g 
+          role='list' 
+          aria-label='Graph legend' 
+          className='legend'
+        >
+          <text x={width - 100} y={20} className='legend-text'>
+            <tspan fill='var(--success-color)'>■</tspan> Hegemons
+          </text>
+          <text x={width - 100} y={35} className='legend-text'>
+            <tspan fill='var(--error-color)'>■</tspan> Others
+          </text>
+        </g>
       </svg>
     </div>
   );

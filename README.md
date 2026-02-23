@@ -8,7 +8,7 @@ A React/TypeScript implementation of an agent-based geopolitical simulation usin
 
 This project recreates a NetLogo model I worked with years ago during my studies, reimagined as a modern web application. The goal was to explore whether complex agent-based modeling could be effectively translated from NetLogo to React while maintaining interactivity and visualization quality.
 
-## 🎯 verview
+## 🎯 Overview
 
 270 countries interact through the Prisoner's Dilemma framework, where cooperation and betrayal dynamics shape global power structures. Countries employ different strategies (Tit-for-Tat, Always Cooperate, Always Betray) and compete with neighbors based on GDP-weighted scores.
 

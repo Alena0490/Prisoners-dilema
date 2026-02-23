@@ -1,6 +1,6 @@
 import type { Country } from '../data/countries';
-import { LuHandshake, LuSwords } from "react-icons/lu";
-import "./Tooltip.css"
+import { LuHandshake, LuSwords } from 'react-icons/lu';
+import './Tooltip.css'
 
 // ============================================
 // TYPES
@@ -60,39 +60,60 @@ const Tooltip = ({
   // ============================================
   
   return (
-    <div className={`tooltip ${isMobile ? 'tooltip--mobile' : ''}`}  style={style}>
-        <div className="tooltip-scroll" ref={refEl}>
+    <div 
+        className={`tooltip ${isMobile ? 'tooltip--mobile' : ''}`}  
+        style={style}
+        role='tooltip'
+        aria-label={`Information about ${country.name}`} 
+    >
+        <div className='tooltip-scroll' ref={refEl}>
         {/* Country Name */}
         <strong>{country.name}</strong>
         
         {/* Basic Info */}
-        <div>Score: {country.score?.toFixed(0) || 'N/A'}</div>
-        <div className={country.hegemon ? "hegemon" : "not-hegemon"}>
-            Hegemon: {country.hegemon ? 'Yes' : 'No'}
+        <dl> 
+        <div>
+          <dt className='sr-only'>Score</dt> 
+          <dd>Score: {country.score?.toFixed(0) || 'N/A'}</dd>
         </div>
-        <div>Ranking: {country.ranking || 'N/A'}</div>
+        
+        <div className={country.hegemon ? 'hegemon' : 'not-hegemon'}>
+          <dt className='sr-only'>Hegemon status</dt>
+          <dd>Hegemon: {country.hegemon ? 'Yes' : 'No'}</dd>
+        </div>
+        
+        <div>
+          <dt className='sr-only'>Ranking</dt>
+          <dd>Ranking: {country.ranking || 'N/A'}</dd>
+        </div>
+      </dl>
         
         {/* Strategies with Neighbors */}
         {country.playTable && Object.keys(country.playTable).length > 0 && (
-            <>
-            <div className="strategies-header">Strategies:</div>
-            {Object.entries(country.playTable).map(([neighborCode, action]) => (
-                <div key={neighborCode} className="strategy-item">
-                - {countries[neighborCode]?.name}: 
-                <span className={action === 'cooperate' ? 'cooperate' : 'defect'}>
+            <section aria-label='Strategies with neighbors'>
+            <h3 className='strategies-header'>Strategies:</h3>
+            <ul role='list'>
+                {Object.entries(country.playTable).map(([neighborCode, action]) => (
+                <li key={neighborCode} className='strategy-item'>
+                    {countries[neighborCode]?.name}: 
+                    <span 
+                    className={action === 'cooperate' ? 'cooperate' : 'defect'}
+                    aria-label={action === 'cooperate' ? 'Cooperating' : 'Betraying'}
+                    >
                     {action === 'cooperate' ? (
-                    <>
-                        <LuHandshake /> cooperate
-                    </>
+                        <>
+                        <LuHandshake aria-hidden='true' /> cooperate
+                        </>
                     ) : (
-                    <>
-                        <LuSwords /> betray
-                    </>
+                        <>
+                        <LuSwords aria-hidden='true' /> betray
+                        </>
                     )}
-                </span>
-                </div>
-            ))}
-            </>
+                    </span>
+                </li>
+                ))}
+            </ul>
+            </section>
         )}
         </div>
     </div>

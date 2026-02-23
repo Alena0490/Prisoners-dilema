@@ -1,4 +1,4 @@
-import "./Controls.css"
+import './Controls.css'
 
 interface ControlsProps {
   // Event handlers
@@ -42,54 +42,81 @@ const Controls = ({
   showLabels
 }: ControlsProps) => {
   return (
-    <div className="controls">
+    <div className='controls'>
       {/* Setup & Export */}
-      <div className="controls-setup">
+      <div className='controls-setup'>
         <button onClick={onSetup}>
           Strategy: {strategy === 'tit-for-tat' ? 'T4T' : strategy === 'always-cooperate' ? 'AllC' : 'AllD'}
         </button>
         <button 
-          className="export-network"
+          className='export-network'
           onClick={onExportNetwork}
+          aria-label='Export network topology as CSV file'
         >
           Export Network
         </button>
       </div>
 
       {/* Configuration */}
-      <div className="controls-config">
-        <button className="toggle-labels" onClick={onToggleLabels}>
+      <div 
+        className='controls-config'
+        role='group' 
+        aria-label='Display configuration'
+      >
+        <button 
+          className='toggle-labels'
+          onClick={onToggleLabels}
+          aria-label={showLabels ? 'Hide score labels on map' : 'Show score labels on map'}
+          aria-pressed={showLabels} 
+        >
           {showLabels ? 'Hide Labels' : 'Show Labels'}
         </button>
         <button 
-          className="prep-model"
+          className='prep-model'
           onClick={onPrepModel}
+          aria-label='Initialize simulation with GDP values'
         >
           Prep Model
         </button>
       </div>
 
       {/* Simulation Controls */}
-      <div className="controls-simulation">
+      <div 
+        className='controls-simulation'
+        role='group' 
+        aria-label='Simulation execution'
+      >
         <button 
-          className={`go ${isRunning ? "is-running" : ""}`} 
+          className={`go ${isRunning ? 'is-running' : ''}`} 
           onClick={onGo}
+          aria-label={isRunning ? 'Stop continuous simulation' : 'Start continuous simulation'}
           disabled={!isModelPrepared}
         >
-          {isRunning ? "Stop" : "Go"}
+          {isRunning ? 'Stop' : 'Go'}
         </button>
         <button 
-          className="go-once"
+          className='go-once'
           onClick={onGoOnce}
           disabled={!isModelPrepared || isRunning}
+          aria-label='Run one simulation step'
         >
           Go Once
         </button>
         
         {/* Hegemons Monitor */}
-        <div className="hegemons-monitor">
-          <div className="monitor-label">Hegemons</div>
-          <div className="monitor-value">{hegemonCount}</div>
+        <div 
+          className='hegemons-monitor'
+          role='status'
+          aria-live='polite'
+          aria-label='Hegemon count display'
+        >
+          <div className='monitor-label'>Hegemons</div>
+          <div 
+            className='monitor-value'
+            role='status'
+          aria-live='polite'
+          aria-label='Hegemon count display'
+        >{hegemonCount}</div>
         </div>
       </div>
     </div>

@@ -112,6 +112,15 @@ h3 {
   font-weight: 600;
 }
 
+.legend-text {
+  font-weight: 600;
+  font-size: 11px;
+  text-shadow: 0.5rem 0.5rem 0.5rem var(--text-primary);
+  text-transform: uppercase;
+  fill: color-mix(in srgb, var(--text-invert) 92%, var(--border-dark));
+  opacity: 0.9;
+}
+
 /* ============================================
    DATA VISUALIZATION - LINES
    ============================================ */

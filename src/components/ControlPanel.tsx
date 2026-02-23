@@ -1,6 +1,6 @@
-import "./ControlPanel.css"
-import Controls from "./Controls";
-import Graphs from "./Graphs";
+import './ControlPanel.css'
+import Controls from './Controls';
+import Graphs from './Graphs';
 
 interface ControlPanelProps {
   className?: string;
@@ -58,15 +58,21 @@ const ControlPanel = ({
   currentScores
 }: ControlPanelProps) => {
   return (
-    <div className={className}>
+    <aside 
+      className={className} 
+      aria-label='Simulation controls and results'
+    >
       <h2>Setup</h2>
-      <div className="instructions">
-          <div className="strategy-legend">
-            <span className="legend-item"><strong>T4T:</strong> Tit-for-Tat</span>
-            <span className="legend-item"><strong>AllC:</strong> Always Cooperate</span>
-            <span className="legend-item"><strong>AllD:</strong> Always Betray</span>
+      <section
+        className='instructions'
+        aria-label='Strategy abbreviations'
+      >
+          <div className='strategy-legend'>
+            <span className='legend-item'><strong>T4T:</strong> Tit-for-Tat</span>
+            <span className='legend-item'><strong>AllC:</strong> Always Cooperate</span>
+            <span className='legend-item'><strong>AllD:</strong> Always Betray</span>
           </div>
-        </div>
+        </section>
       
       <Controls 
         onSetup={onSetup}
@@ -87,7 +93,7 @@ const ControlPanel = ({
         payoffsHistory={payoffsHistory}
         currentScores={currentScores}
       />
-    </div>
+    </aside>
   )
 }
 

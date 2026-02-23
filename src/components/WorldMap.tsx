@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Country } from '../data/countries';
 import Tooltip from './Tooltip';
-import "./WorldMap.css";
+import './WorldMap.css'
 
 // ============================================
 // TYPES
@@ -40,7 +40,7 @@ interface WorldMapProps {
 // ============================================
 
 const formatScore = (n: number) =>
-  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 0 }).format(n);
 
 const intersects = (a: Rect, b: Rect) =>
   !(a.x2 < b.x1 || a.x1 > b.x2 || a.y2 < b.y1 || a.y1 > b.y2);
@@ -175,44 +175,57 @@ useEffect(() => {
     <div 
       className={className}
       onWheel={handleMapWheel}
+      aria-label='Interactive world map showing country interactions'
     >
       <svg 
         ref={svgRef}
-        viewBox="0 0 1009 652"
-        className="world-map-svg"
+        viewBox='0 0 1009 652'
+        className='world-map-svg'
+        aria-label='World map with 270 countries'
       >
         {/* Country paths */}
-        <g>
+        <g role='group' aria-label='Country regions'>
           {Object.entries(countries).map(([code, country]) => (
             <path
               key={code}
               d={country.path}
-              stroke="#1C3847"
-              strokeWidth="0.5"
+              stroke='#1C3847'
+              strokeWidth='0.5'
               className={getCountryClass(country)} 
-                onClick={() => {
+              tabIndex={0}
+              onClick={() => {
+                if (isTouchDevice) {
+                  setActiveCountry(activeCountry === code ? null : code);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
                   if (isTouchDevice) {
                     setActiveCountry(activeCountry === code ? null : code);
+                  } else {
+                    setHoveredCountry(code);
                   }
-                }}
-                onMouseEnter={() => {
-                  if (!isTouchDevice) setHoveredCountry(code);
-                }}
-                onMouseLeave={() => {
-                  if (!isTouchDevice) setHoveredCountry(null);
-                }}
-                onMouseMove={(e) => {
-                  if (!isTouchDevice) {
-                    setMousePosition({ x: e.clientX, y: e.clientY });
-                  }
-                }}
+                }
+              }}
+              onMouseEnter={() => {
+                if (!isTouchDevice) setHoveredCountry(code);
+              }}
+              onMouseLeave={() => {
+                if (!isTouchDevice) setHoveredCountry(null);
+              }}
+              onMouseMove={(e) => {
+                if (!isTouchDevice) {
+                  setMousePosition({ x: e.clientX, y: e.clientY });
+                }
+              }}
             />
           ))}
         </g>
 
         {/* Score labels with collision detection */}
         {showLabels && (
-          <g className="labels">
+          <g className='labels' aria-label='Country score labels'>
             {(() => {
               const placed: Rect[] = [];
 
@@ -222,7 +235,7 @@ useEffect(() => {
                   if (!label) return null;
 
                   const value = country.score ?? 0;
-                  const text = label.area < 400 ? "•" : formatScore(value);
+                  const text = label.area < 400 ? '•' : formatScore(value);
 
                   const fontSize = label.area > 16000 ? 11 : label.area > 6000 ? 10 : 9;
                   const w = Math.max(10, text.length * (fontSize * 0.55));
@@ -251,9 +264,9 @@ useEffect(() => {
                     key={`label-${code}`}
                     x={label.x}
                     y={label.y}
-                    className="country-label"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
+                    className='country-label'
+                    textAnchor='middle'
+                    dominantBaseline='middle'
                     style={{ fontSize }}
                   >
                     {text}

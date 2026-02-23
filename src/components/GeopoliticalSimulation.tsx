@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback  } from "react"
-import { COUNTRIES } from "../data/countries"
-import  type { Country } from "../data/countries";
-import WorldMap from "./WorldMap"
-import ControlPanel from "./ControlPanel"
-import "../App.css"
+import { useState, useEffect, useCallback  } from 'react'
+import { COUNTRIES } from '../data/countries'
+import  type { Country } from '../data/countries';
+import WorldMap from './WorldMap'
+import ControlPanel from './ControlPanel'
+import '../App.css'
 
 const GeopoliticalSimulation = () => {
   // ============================================
@@ -262,19 +262,21 @@ const GeopoliticalSimulation = () => {
   // ============================================
   
   return (
-    <div className="simulation-wrapper">
-      <section className="simulation-header">
+    <div className='simulation-wrapper'>
+      <header className='simulation-header'>
           <h1>Geopolitical Simulation</h1>
           <p>Agent-based model exploring how countries interact through Prisoner's Dilemma strategies in a global network.</p>
-      </section>
-      <div className="geopolitical-simulation">
+      </header>
+      <main className='geopolitical-simulation'>
         <WorldMap 
-          className="world-map-container" 
+          className='world-map-container'
           countries={countries} 
           showLabels={showLabels} 
+          aria-label='Interactive world map showing country interactions'
         />
         <ControlPanel 
-          className="control-panel" 
+          className='control-panel'
+          aria-label='Simulation controls and results'
           onSetup={handleSetup}
           strategy={strategy}
           onPrepModel={handlePrepModel}
@@ -290,7 +292,7 @@ const GeopoliticalSimulation = () => {
           onToggleLabels={handleToggleLabels}
           showLabels={showLabels}
         />
-      </div>
+      </main>
     </div>
   )
 }

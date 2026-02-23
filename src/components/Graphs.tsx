@@ -1,7 +1,7 @@
 import HegemonGraph from './HegemonGraph';
 import PayoffsGraph from './PayoffsGraph';
 import ScoresGraph from './ScoresGraph';
-import "./Graphs.css"
+import './Graphs.css'
 
 interface GraphsProps {
   // Historical data
@@ -18,15 +18,15 @@ const Graphs = ({
   currentScores
 }: GraphsProps) => {
   return (
-    <div className='results'>
+    <section className='results' aria-label='Simulation results and graphs'>
       <h2 className='result-title'>Results</h2>
-      <hr className='divider'/>
+      <hr className='divider'  aria-hidden='true'/>
       
       {/* Score Distribution - shows immediately after Prep Model */}
       {currentScores.length > 0 && (
         <>
           <h3>Scores</h3>
-          <output>
+          <output  aria-label='Histogram showing score distribution across countries'>
             <ScoresGraph className='one-graph' data={currentScores}/>
           </output>
         </>
@@ -36,7 +36,7 @@ const Graphs = ({
       {payoffsHistory.length > 0 && (
         <>
           <h3>Payoffs</h3>
-          <output>
+          <output ria-label='Line graph comparing average scores of hegemons versus other countries'>
             <PayoffsGraph className='one-graph' data={payoffsHistory}/>
           </output>
         </>
@@ -46,12 +46,12 @@ const Graphs = ({
       {hegemonHistory.length > 0 && (
         <>
           <h3>Hegemons</h3>
-          <output>
+          <output aria-label='Line graph showing number of hegemons over time'>
             <HegemonGraph className='one-graph' data={hegemonHistory} />
           </output>
         </>
       )}
-    </div>
+    </section>
   )
 }
 

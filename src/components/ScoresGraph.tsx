@@ -1,4 +1,4 @@
-import "./Graphs.css"
+import './Graphs.css'
 
 // ============================================
 // TYPES
@@ -14,7 +14,7 @@ interface ScoresGraphProps {
 // ============================================
 
 const formatScore = (n: number) =>
-  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 0 }).format(n);
 
 // ============================================
 // COMPONENT
@@ -78,26 +78,35 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
   
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${width} ${height}`} className='hegemon-graph'>
+      <svg 
+        viewBox={`0 0 ${width} ${height}`} 
+        className='hegemon-graph'
+        role='img'
+        aria-label={`Histogram showing score distribution across countries. Scores range from ${formatScore(minScore)} to ${formatScore(maxScore)}, with ${data.length} total countries. Highest bin contains ${maxBinCount} countries.`}
+      >
+        <title>Score Distribution Histogram</title>
+        <desc>Bar chart showing how many countries fall into each score range. Top 5% outliers excluded for visibility.</desc>
         {/* Histogram bars */}
-        {bins.map((count, i) => {
-          const barHeight = count > 0 
-            ? (count / maxBinCount) * (height - padTop - padBottom)
-            : 0;
-          const x = padLeft + i * barWidth;
-          const y = height - padBottom - barHeight;
-          
-          return (
-            <rect
-              key={i}
-              x={x + 1}
-              y={y}
-              width={barWidth - 2}
-              height={barHeight}
-              className='bar'
-            />
-          );
-        })}
+        <g aria-hidden='false'>
+          {bins.map((count, i) => {
+            const barHeight = count > 0 
+              ? (count / maxBinCount) * (height - padTop - padBottom)
+              : 0;
+            const x = padLeft + i * barWidth;
+            const y = height - padBottom - barHeight;
+            
+            return (
+              <rect
+                key={i}
+                x={x + 1}
+                y={y}
+                width={barWidth - 2}
+                height={barHeight}
+                className='bar'
+              />
+            );
+          })}
+        </g>
 
         {/* Y axis */}
         <line
@@ -106,35 +115,38 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
           x2={padLeft}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
 
         {/* Y axis labels */}
-        {Array.from({ length: 5 }).map((_, i) => {
-          const tickCount = 5;
-          const value = Math.round((maxBinCount / (tickCount - 1)) * i);
-          const y = height - padBottom - (value / maxBinCount) * (height - padTop - padBottom);
-          
-          return (
-            <g key={`y-${i}`}>
-              <line
-                className='axis-y'
-                x1={padLeft - 5}
-                x2={padLeft}
-                y1={y}
-                y2={y}
-              />
-              <text
-                x={padLeft - 8}
-                y={y}
-                textAnchor='end'
-                dominantBaseline='middle'
-                className='axis-label'
-              >
-                {value}
-              </text>
-            </g>
-          );
-        })}
+        <g aria-hidden='true'>
+          {Array.from({ length: 5 }).map((_, i) => {
+            const tickCount = 5;
+            const value = Math.round((maxBinCount / (tickCount - 1)) * i);
+            const y = height - padBottom - (value / maxBinCount) * (height - padTop - padBottom);
+            
+            return (
+              <g key={`y-${i}`}>
+                <line
+                  className='axis-y'
+                  x1={padLeft - 5}
+                  x2={padLeft}
+                  y1={y}
+                  y2={y}
+                />
+                <text
+                  x={padLeft - 8}
+                  y={y}
+                  textAnchor='end'
+                  dominantBaseline='middle'
+                  className='axis-label'
+                >
+                  {value}
+                </text>
+              </g>
+            );
+          })}
+        </g>
 
         {/* Y axis legend */}
         <text
@@ -143,6 +155,7 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
           transform={`rotate(-90, ${padLeft - 30}, ${height / 2})`}
           textAnchor='middle'
           className='axis-legend axis-legend--y'
+          aria-hidden='true'
         >
           Count
         </text>
@@ -154,27 +167,30 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
           x2={width - padRight}
           y2={height - padBottom}
           className='graph-axis'
+          aria-hidden='true'
         />
 
         {/* X axis labels */}
-        {bins.map((_, i) => {
-          if (i % 2 !== 0) return null;
-          
-          const rangeStart = Math.round(minScore + i * binSize);
-          const x = padLeft + i * barWidth + barWidth / 2;
-          
-          return (
-            <text
-              key={`x-${i}`}
-              x={x}
-              y={height - padBottom + 15}
-              textAnchor='middle'
-              className='axis-label'
-            >
-              {formatScore(rangeStart)}
-            </text>
-          );
-        })}
+        <g aria-hidden='true'>
+          {bins.map((_, i) => {
+            if (i % 2 !== 0) return null;
+            
+            const rangeStart = Math.round(minScore + i * binSize);
+            const x = padLeft + i * barWidth + barWidth / 2;
+            
+            return (
+              <text
+                key={`x-${i}`}
+                x={x}
+                y={height - padBottom + 15}
+                textAnchor='middle'
+                className='axis-label'
+              >
+                {formatScore(rangeStart)}
+              </text>
+            );
+          })}
+        </g>
 
         {/* X axis legend */}
         <text
@@ -182,6 +198,7 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
           y={height}
           textAnchor='middle'
           className='axis-legend'
+          aria-hidden='true'
         >
           Score Range
         </text>
