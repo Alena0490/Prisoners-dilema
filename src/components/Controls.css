@@ -46,6 +46,7 @@
   appearance: none;
   position: relative;
   min-height: 2rem;
+  overflow: hidden;
   border-radius: var(--radius-sm);
   border: 1px solid color-mix(in srgb, var(--border-dark) 35%, transparent);
 
@@ -150,6 +151,23 @@
       color-mix(in srgb, var(--success-color) 70%, white 30%),
       color-mix(in srgb, var(--success-color) 82%, black 8%)
     );
+}
+
+/* Button Animation */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--main-color) 45%, transparent);
+  pointer-events: none;
+  transform: scale(0);
+  animation: ripple 0.5s ease-out forwards;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 }
 
 /* ============================================

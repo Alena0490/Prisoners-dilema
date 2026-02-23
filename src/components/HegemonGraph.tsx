@@ -21,10 +21,8 @@ const HegemonGraph = ({ data, className }: HegemonGraphProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
 useEffect(() => {
-  console.log('isInView:', isInView, 'svgRef:', svgRef.current);
   if (isInView && svgRef.current) {
     svgRef.current.classList.add('animate');
-    console.log('classes after add:', svgRef.current.className);
   }
 }, [isInView]);
 
