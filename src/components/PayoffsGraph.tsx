@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+import { useInView } from '../hooks/useInView';
 import './Graphs.css'
 
 // ============================================
@@ -21,6 +23,17 @@ const formatScore = (n: number) =>
 // ============================================
 
 const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
+    const { ref, isInView } = useInView();
+
+    const svgRef = useRef<SVGSVGElement>(null);
+
+    useEffect(() => {
+      if (isInView && svgRef.current) {
+        void svgRef.current.getBoundingClientRect();
+        svgRef.current.classList.add('animate');
+      }
+    }, [isInView]);
+
   // ============================================
   // VALIDATION
   // ============================================
@@ -100,9 +113,11 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
   
   return (
     <div className={className}>
+      <div ref={ref}>
       <svg 
         viewBox={`0 0 ${width} ${height}`} 
-        className='payoffs-graph'
+        ref={svgRef}
+        className={`payoffs-graph`} 
         role='img'
         aria-label={`Line graph comparing average scores: hegemons ranging from ${formatScore(Math.min(...data.map(d => d.hegemonAvg)))} to ${formatScore(Math.max(...data.map(d => d.hegemonAvg)))}, others from ${formatScore(Math.min(...data.map(d => d.otherAvg)))} to ${formatScore(Math.max(...data.map(d => d.otherAvg)))} over ${data.length} steps`}
       >
@@ -111,13 +126,13 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
         {/* Hegemon line */}
         <path 
           d={hegemonPath} 
-          className='graph-line graph-line--hegemon'
+          className='graph-line graph-line--hegemon' 
         />
 
         {/* Other countries line */}
         <path 
           d={otherPath} 
-          className='graph-line graph-line--other'
+          className='graph-line graph-line--other' 
         />
         
         {/* X axis */}
@@ -234,6 +249,7 @@ const PayoffsGraph = ({ data, className }: PayoffsGraphProps) => {
           </text>
         </g>
       </svg>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useInView } from '../hooks/useInView';
 import './Graphs.css'
 
 // ============================================
@@ -21,6 +22,8 @@ const formatScore = (n: number) =>
 // ============================================
 
 const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
+    const { ref, isInView } = useInView();
+
   // ============================================
   // VALIDATION
   // ============================================
@@ -78,131 +81,133 @@ const ScoresGraph = ({ data, className }: ScoresGraphProps) => {
   
   return (
     <div className={className}>
-      <svg 
-        viewBox={`0 0 ${width} ${height}`} 
-        className='hegemon-graph'
-        role='img'
-        aria-label={`Histogram showing score distribution across countries. Scores range from ${formatScore(minScore)} to ${formatScore(maxScore)}, with ${data.length} total countries. Highest bin contains ${maxBinCount} countries.`}
-      >
-        <title>Score Distribution Histogram</title>
-        <desc>Bar chart showing how many countries fall into each score range. Top 5% outliers excluded for visibility.</desc>
-        {/* Histogram bars */}
-        <g aria-hidden='false'>
-          {bins.map((count, i) => {
-            const barHeight = count > 0 
-              ? (count / maxBinCount) * (height - padTop - padBottom)
-              : 0;
-            const x = padLeft + i * barWidth;
-            const y = height - padBottom - barHeight;
-            
-            return (
-              <rect
-                key={i}
-                x={x + 1}
-                y={y}
-                width={barWidth - 2}
-                height={barHeight}
-                className='bar'
-              />
-            );
-          })}
-        </g>
-
-        {/* Y axis */}
-        <line
-          x1={padLeft}
-          y1={padTop}
-          x2={padLeft}
-          y2={height - padBottom}
-          className='graph-axis'
-          aria-hidden='true'
-        />
-
-        {/* Y axis labels */}
-        <g aria-hidden='true'>
-          {Array.from({ length: 5 }).map((_, i) => {
-            const tickCount = 5;
-            const value = Math.round((maxBinCount / (tickCount - 1)) * i);
-            const y = height - padBottom - (value / maxBinCount) * (height - padTop - padBottom);
-            
-            return (
-              <g key={`y-${i}`}>
-                <line
-                  className='axis-y'
-                  x1={padLeft - 5}
-                  x2={padLeft}
-                  y1={y}
-                  y2={y}
-                />
-                <text
-                  x={padLeft - 8}
+      <div ref={ref}>
+        <svg 
+          viewBox={`0 0 ${width} ${height}`} 
+          className={`scores-graph ${isInView ? 'animate' : ''}`} 
+          role='img'
+          aria-label={`Histogram showing score distribution across countries. Scores range from ${formatScore(minScore)} to ${formatScore(maxScore)}, with ${data.length} total countries. Highest bin contains ${maxBinCount} countries.`}
+        >
+          <title>Score Distribution Histogram</title>
+          <desc>Bar chart showing how many countries fall into each score range. Top 5% outliers excluded for visibility.</desc>
+          {/* Histogram bars */}
+          <g aria-hidden='false'>
+            {bins.map((count, i) => {
+              const barHeight = count > 0 
+                ? (count / maxBinCount) * (height - padTop - padBottom)
+                : 0;
+              const x = padLeft + i * barWidth;
+              const y = height - padBottom - barHeight;
+              
+              return (
+                <rect
+                  key={i}
+                  x={x + 1}
                   y={y}
-                  textAnchor='end'
-                  dominantBaseline='middle'
+                  width={barWidth - 2}
+                  height={barHeight}
+                  className='bar'
+                />
+              );
+            })}
+          </g>
+
+          {/* Y axis */}
+          <line
+            x1={padLeft}
+            y1={padTop}
+            x2={padLeft}
+            y2={height - padBottom}
+            className='graph-axis'
+            aria-hidden='true'
+          />
+
+          {/* Y axis labels */}
+          <g aria-hidden='true'>
+            {Array.from({ length: 5 }).map((_, i) => {
+              const tickCount = 5;
+              const value = Math.round((maxBinCount / (tickCount - 1)) * i);
+              const y = height - padBottom - (value / maxBinCount) * (height - padTop - padBottom);
+              
+              return (
+                <g key={`y-${i}`}>
+                  <line
+                    className='axis-y'
+                    x1={padLeft - 5}
+                    x2={padLeft}
+                    y1={y}
+                    y2={y}
+                  />
+                  <text
+                    x={padLeft - 8}
+                    y={y}
+                    textAnchor='end'
+                    dominantBaseline='middle'
+                    className='axis-label'
+                  >
+                    {value}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+
+          {/* Y axis legend */}
+          <text
+            x={padLeft - 30}
+            y={height / 2}
+            transform={`rotate(-90, ${padLeft - 30}, ${height / 2})`}
+            textAnchor='middle'
+            className='axis-legend axis-legend--y'
+            aria-hidden='true'
+          >
+            Count
+          </text>
+          
+          {/* X axis */}
+          <line
+            x1={padLeft}
+            y1={height - padBottom}
+            x2={width - padRight}
+            y2={height - padBottom}
+            className='graph-axis'
+            aria-hidden='true'
+          />
+
+          {/* X axis labels */}
+          <g aria-hidden='true'>
+            {bins.map((_, i) => {
+              if (i % 2 !== 0) return null;
+              
+              const rangeStart = Math.round(minScore + i * binSize);
+              const x = padLeft + i * barWidth + barWidth / 2;
+              
+              return (
+                <text
+                  key={`x-${i}`}
+                  x={x}
+                  y={height - padBottom + 15}
+                  textAnchor='middle'
                   className='axis-label'
                 >
-                  {value}
+                  {formatScore(rangeStart)}
                 </text>
-              </g>
-            );
-          })}
-        </g>
+              );
+            })}
+          </g>
 
-        {/* Y axis legend */}
-        <text
-          x={padLeft - 30}
-          y={height / 2}
-          transform={`rotate(-90, ${padLeft - 30}, ${height / 2})`}
-          textAnchor='middle'
-          className='axis-legend axis-legend--y'
-          aria-hidden='true'
-        >
-          Count
-        </text>
-        
-        {/* X axis */}
-        <line
-          x1={padLeft}
-          y1={height - padBottom}
-          x2={width - padRight}
-          y2={height - padBottom}
-          className='graph-axis'
-          aria-hidden='true'
-        />
-
-        {/* X axis labels */}
-        <g aria-hidden='true'>
-          {bins.map((_, i) => {
-            if (i % 2 !== 0) return null;
-            
-            const rangeStart = Math.round(minScore + i * binSize);
-            const x = padLeft + i * barWidth + barWidth / 2;
-            
-            return (
-              <text
-                key={`x-${i}`}
-                x={x}
-                y={height - padBottom + 15}
-                textAnchor='middle'
-                className='axis-label'
-              >
-                {formatScore(rangeStart)}
-              </text>
-            );
-          })}
-        </g>
-
-        {/* X axis legend */}
-        <text
-          x={width / 2}
-          y={height}
-          textAnchor='middle'
-          className='axis-legend'
-          aria-hidden='true'
-        >
-          Score Range
-        </text>
-      </svg>
+          {/* X axis legend */}
+          <text
+            x={width / 2}
+            y={height}
+            textAnchor='middle'
+            className='axis-legend'
+            aria-hidden='true'
+          >
+            Score Range
+          </text>
+        </svg>
+      </div>
     </div>
   );
 }
